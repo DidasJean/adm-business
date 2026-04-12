@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.npm-cache
+.git
+.gitignore
+icons
+adm-calculator.html
+serve-local.js
+start-adm-server.bat
+manifest.webmanifest
+sw.js
+
