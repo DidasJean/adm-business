@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ADM Calculator">
     <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
     <title>ADM CALCULATOR | Système Expert de Gestion des Dettes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -359,6 +360,221 @@
         .logout-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
+        }
+
+        .notification-center {
+            position: relative;
+        }
+
+        .notification-btn {
+            position: relative;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.08rem;
+        }
+
+        .notification-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: #ff3b30;
+            color: #fff;
+            border: 2px solid #fff;
+            font-size: 0.72rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            box-shadow: 0 6px 14px rgba(181, 30, 24, 0.35);
+        }
+
+        .notification-badge.hidden {
+            display: none;
+        }
+
+        .notification-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: min(90vw, 370px);
+            max-height: min(68vh, 560px);
+            background: #fff;
+            border: 1px solid #dce7ff;
+            border-radius: 14px;
+            box-shadow: 0 18px 44px rgba(14, 45, 98, 0.24);
+            z-index: 4500;
+            overflow: hidden;
+        }
+
+        .notification-menu.hidden {
+            display: none;
+        }
+
+        .notification-menu-head {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: linear-gradient(135deg, #edf4ff 0%, #f7fbff 100%);
+            border-bottom: 1px solid #e4edff;
+        }
+
+        .notification-menu-title {
+            font-weight: 800;
+            color: #153f85;
+            font-size: 0.95rem;
+        }
+
+        .notification-menu-actions {
+            display: inline-flex;
+            gap: 6px;
+        }
+
+        .notification-menu-action-btn {
+            border: 1px solid #c8dafd;
+            background: #fff;
+            color: #1d56a6;
+            border-radius: 8px;
+            padding: 6px 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .notification-menu-list {
+            padding: 10px;
+            overflow: auto;
+            max-height: calc(min(68vh, 560px) - 60px);
+        }
+
+        .notification-menu-empty {
+            padding: 24px 12px;
+            text-align: center;
+            color: #6e7f9a;
+            font-weight: 600;
+        }
+
+        .notification-item {
+            border: 1px solid #dbe7ff;
+            border-radius: 12px;
+            padding: 10px 11px;
+            margin-bottom: 9px;
+            background: #f8fbff;
+        }
+
+        .notification-item.unread {
+            background: #edf4ff;
+            border-color: #b8d0ff;
+        }
+
+        .notification-item-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .notification-item-title {
+            font-weight: 800;
+            color: #113d82;
+            font-size: 0.89rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-item-time {
+            font-size: 0.74rem;
+            color: #6f819d;
+            white-space: nowrap;
+        }
+
+        .notification-item-message {
+            font-size: 0.88rem;
+            color: #24344f;
+            line-height: 1.45;
+        }
+
+        html[data-theme="dark"] .notification-badge {
+            border-color: #0f1b30;
+        }
+
+        html[data-theme="dark"] .notification-menu {
+            background: #17243b;
+            border-color: #284264;
+            box-shadow: 0 20px 42px rgba(0, 0, 0, 0.48);
+        }
+
+        html[data-theme="dark"] .notification-menu-head {
+            background: linear-gradient(135deg, #1b314f 0%, #172943 100%);
+            border-bottom-color: #294467;
+        }
+
+        html[data-theme="dark"] .notification-menu-title {
+            color: #e8f2ff;
+        }
+
+        html[data-theme="dark"] .notification-menu-action-btn {
+            background: #223757;
+            border-color: #3b5c88;
+            color: #d5e6ff;
+        }
+
+        html[data-theme="dark"] .notification-menu-empty,
+        html[data-theme="dark"] .notification-item-time {
+            color: #9fb3d3;
+        }
+
+        html[data-theme="dark"] .notification-item {
+            background: #1d304a;
+            border-color: #2f4e78;
+        }
+
+        html[data-theme="dark"] .notification-item.unread {
+            background: #213a5d;
+            border-color: #4c74ac;
+        }
+
+        html[data-theme="dark"] .notification-item-title {
+            color: #e4efff;
+        }
+
+        html[data-theme="dark"] .notification-item-message {
+            color: #c8d9f1;
+        }
+
+        @media (max-width: 768px) {
+            .notification-btn {
+                width: 42px;
+                height: 42px;
+                border-radius: 11px;
+            }
+
+            .notification-menu {
+                right: -10px;
+                width: min(96vw, 360px);
+            }
         }
 
         /* Navigation Tabs */
@@ -2492,6 +2708,22 @@
                         <i class="fas fa-database"></i>
                         <span id="data-stats">0 Clients, 0 Transactions</span>
                     </div>
+                    <div class="notification-center" id="notification-center" style="display:none;">
+                        <button type="button" class="notification-btn" id="notification-btn" title="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge hidden" id="notification-badge">0</span>
+                        </button>
+                        <div class="notification-menu hidden" id="notification-menu">
+                            <div class="notification-menu-head">
+                                <div class="notification-menu-title">Notifications client</div>
+                                <div class="notification-menu-actions">
+                                    <button type="button" class="notification-menu-action-btn" id="notification-mark-all-btn">Tout lire</button>
+                                    <button type="button" class="notification-menu-action-btn" id="notification-open-dashboard-btn">Voir</button>
+                                </div>
+                            </div>
+                            <div class="notification-menu-list" id="notification-menu-list"></div>
+                        </div>
+                    </div>
                     <button class="logout-btn" id="logout-btn">
                         <i class="fas fa-sign-out-alt"></i> Déconnexion
                     </button>
@@ -3408,6 +3640,7 @@
         let activeChatClientId = '';
         let socketClient = null;
         let socketScriptLoaded = false;
+        let notificationMenuOpen = false;
         try {
             const apiParam = new URLSearchParams(window.location.search).get('api');
             if (apiParam && /^https?:\/\//i.test(apiParam)) {
@@ -3635,6 +3868,83 @@
                 .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
         }
 
+        function closeNotificationMenu() {
+            const menu = document.getElementById('notification-menu');
+            if (menu) menu.classList.add('hidden');
+            notificationMenuOpen = false;
+        }
+
+        function getCurrentRoleNotificationClientId() {
+            if (!currentUser || currentUser.role !== 'client') return '';
+            return currentUser.linkedClientId || '';
+        }
+
+        function getCurrentRoleNotifications() {
+            const clientId = getCurrentRoleNotificationClientId();
+            if (!clientId) return [];
+            return getClientNotifications(clientId);
+        }
+
+        function renderNotificationMenu() {
+            const listContainer = document.getElementById('notification-menu-list');
+            if (!listContainer) return;
+
+            const notifications = getCurrentRoleNotifications();
+            if (notifications.length === 0) {
+                listContainer.innerHTML = '<div class="notification-menu-empty">Aucune notification pour le moment.</div>';
+                return;
+            }
+
+            listContainer.innerHTML = notifications.slice(0, 12).map(n => `
+                <div class="notification-item ${n.read ? '' : 'unread'}">
+                    <div class="notification-item-head">
+                        <div class="notification-item-title" style="color:${escapeHTML(n.color || '#113d82')};">
+                            <i class="fas ${escapeHTML(n.icon || 'fa-bell')}"></i>
+                            ${escapeHTML(n.title || 'Notification')}
+                        </div>
+                        <div class="notification-item-time">${formatDate(n.createdAt)}</div>
+                    </div>
+                    <div class="notification-item-message">${escapeHTML(n.message || '')}</div>
+                </div>
+            `).join('');
+        }
+
+        function toggleNotificationMenu() {
+            const menu = document.getElementById('notification-menu');
+            if (!menu) return;
+            notificationMenuOpen = !notificationMenuOpen;
+            menu.classList.toggle('hidden', !notificationMenuOpen);
+            if (notificationMenuOpen) renderNotificationMenu();
+        }
+
+        function updateNotificationCenter() {
+            const center = document.getElementById('notification-center');
+            const badge = document.getElementById('notification-badge');
+            const title = document.querySelector('.notification-menu-title');
+            if (!center || !badge) return;
+
+            const isClientRole = Boolean(currentUser && currentUser.role === 'client' && currentUser.linkedClientId);
+            center.style.display = isClientRole ? '' : 'none';
+
+            if (!isClientRole) {
+                closeNotificationMenu();
+                return;
+            }
+
+            const notifications = getCurrentRoleNotifications();
+            const unreadCount = notifications.filter(n => !n.read).length;
+
+            badge.textContent = unreadCount > 99 ? '99+' : String(unreadCount);
+            badge.classList.toggle('hidden', unreadCount <= 0);
+            if (title) {
+                title.textContent = unreadCount > 0
+                    ? `Notifications client (${unreadCount})`
+                    : 'Notifications client';
+            }
+
+            if (notificationMenuOpen) renderNotificationMenu();
+        }
+
         function addClientMovementNotification(transaction, client) {
             if (!transaction || !client || !client.id) return;
             const typeText = transaction.type === 'debt' ? 'Nouvelle dette' : 'Nouveau paiement';
@@ -3661,6 +3971,7 @@
             }
             localStorage.setItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
             createEmergencySnapshot('addClientMovementNotification');
+            updateNotificationCenter();
         }
 
         async function markAllClientNotificationsAsRead(clientId) {
@@ -3671,6 +3982,7 @@
                     clientNotifications = Array.isArray(notifData) ? notifData.map(mapApiNotification) : [];
                     localStorage.setItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
                     createEmergencySnapshot('markAllClientNotificationsAsReadApi');
+                    updateNotificationCenter();
                     return;
                 } catch (_err) {
                     // fallback local
@@ -3688,6 +4000,7 @@
             if (!changed) return;
             localStorage.setItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
             createEmergencySnapshot('markAllClientNotificationsAsRead');
+            updateNotificationCenter();
         }
 
         function getCurrentChatClientId() {
@@ -3835,12 +4148,14 @@
             if (!container) return;
             if (!currentUser || currentUser.role !== 'client') {
                 container.innerHTML = '';
+                updateNotificationCenter();
                 return;
             }
 
             const client = clients.find(c => c.id === currentUser.linkedClientId);
             if (!client) {
                 container.innerHTML = '<div style="color:#c62828;">Votre compte client n’est pas encore lié. Contactez l’administrateur.</div>';
+                updateNotificationCenter();
                 return;
             }
 
@@ -3912,6 +4227,7 @@
                 playClientNotificationTone();
                 showToast('Nouvelle notification reçue', 'info');
             }
+            updateNotificationCenter();
         }
 
         function applyRoleAccess() {
@@ -3992,6 +4308,7 @@
                 activeChatClientId = currentUser.linkedClientId || '';
             }
             loadChatThread();
+            updateNotificationCenter();
         }
 
         function authenticateUser(role, password) {
@@ -4183,6 +4500,7 @@
             sessionStorage.removeItem(AUTH_USER_KEY);
             setApiToken('');
             disconnectRealtime();
+            closeNotificationMenu();
             isAuthenticated = false;
             currentUser = null;
             setAppVisibility(false);
@@ -4513,6 +4831,7 @@
             }
 
             saveAllData();
+            updateNotificationCenter();
             return true;
         }
 
@@ -4879,6 +5198,21 @@
                     sendChatMessage();
                 }
             });
+            document.getElementById('notification-btn').addEventListener('click', function(event) {
+                event.stopPropagation();
+                toggleNotificationMenu();
+            });
+            document.getElementById('notification-mark-all-btn').addEventListener('click', async function() {
+                const clientId = getCurrentRoleNotificationClientId();
+                if (!clientId) return;
+                await markAllClientNotificationsAsRead(clientId);
+                renderClientPortal();
+                renderNotificationMenu();
+            });
+            document.getElementById('notification-open-dashboard-btn').addEventListener('click', function() {
+                switchTab('dashboard');
+                closeNotificationMenu();
+            });
             document.getElementById('setting-theme').addEventListener('change', function() {
                 document.documentElement.setAttribute('data-theme', this.value || 'light');
             });
@@ -4892,6 +5226,15 @@
             window.addEventListener('click', function(e) {
                 if (e.target.classList.contains('modal')) {
                     closeModal();
+                }
+                const center = document.getElementById('notification-center');
+                if (notificationMenuOpen && center && !center.contains(e.target)) {
+                    closeNotificationMenu();
+                }
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && notificationMenuOpen) {
+                    closeNotificationMenu();
                 }
             });
         }
@@ -7156,6 +7499,7 @@
             document.getElementById('data-stats').textContent = 
                 `${clientCount} Client${clientCount > 1 ? 's' : ''}, ${transactionCount} Transaction${transactionCount > 1 ? 's' : ''}`;
             updateNavCounts(clientCount, transactionCount);
+            updateNotificationCenter();
         }
 
         function updateNavCounts(clientCount = clients.length, transactionCount = transactions.length) {
