@@ -564,6 +564,217 @@
             color: #c8d9f1;
         }
 
+        .chat-shell {
+            border: 1px solid #d7e3ff;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #f7faff;
+        }
+
+        .comm-top-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            border-bottom: 1px solid #d7e3ff;
+            background: #edf4ff;
+        }
+
+        .comm-tab-btn {
+            border: 1px solid #bfd5ff;
+            background: #fff;
+            color: #1a468f;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .comm-tab-btn.active {
+            background: linear-gradient(135deg, #2a64ce 0%, #1f86df 100%);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .chat-thread {
+            min-height: 220px;
+            max-height: 330px;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #f7faff 0%, #f0f6ff 100%);
+            padding: 10px;
+        }
+
+        .chat-empty {
+            color: #6c7d98;
+            text-align: center;
+            padding: 20px 10px;
+            font-weight: 600;
+        }
+
+        .chat-row {
+            display: flex;
+            margin: 8px 0;
+        }
+
+        .chat-row.mine {
+            justify-content: flex-end;
+        }
+
+        .chat-row.theirs {
+            justify-content: flex-start;
+        }
+
+        .chat-bubble {
+            max-width: 86%;
+            border-radius: 14px;
+            padding: 9px 11px;
+            border: 1px solid #cfe0ff;
+            box-shadow: 0 6px 14px rgba(53, 91, 156, 0.12);
+        }
+
+        .chat-bubble.mine {
+            background: #daf4dd;
+            border-color: #bde5c2;
+        }
+
+        .chat-bubble.theirs {
+            background: #ffffff;
+            border-color: #d8e6ff;
+        }
+
+        .chat-meta {
+            font-size: 0.75rem;
+            color: #5d6d87;
+            margin-bottom: 3px;
+            font-weight: 700;
+        }
+
+        .chat-body {
+            color: #1e2a3e;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .comm-notifications-list {
+            max-height: 330px;
+            overflow: auto;
+            padding: 10px;
+            background: linear-gradient(180deg, #f7faff 0%, #eef5ff 100%);
+        }
+
+        .comm-notification-item {
+            border: 1px solid #d3e3ff;
+            border-radius: 12px;
+            background: #fff;
+            padding: 9px 10px;
+            margin-bottom: 8px;
+        }
+
+        .comm-notification-item.unread {
+            background: #edf4ff;
+            border-color: #b9d1ff;
+        }
+
+        .comm-notification-title {
+            font-weight: 800;
+            font-size: 0.88rem;
+            color: #1c4d99;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .comm-notification-time {
+            font-size: 0.74rem;
+            color: #66789a;
+        }
+
+        .comm-notification-msg {
+            margin-top: 4px;
+            color: #2a3d5c;
+            font-size: 0.88rem;
+            line-height: 1.4;
+        }
+
+        .comm-notification-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        html[data-theme="dark"] .chat-shell {
+            border-color: #2c456d;
+            background: #18283f;
+        }
+
+        html[data-theme="dark"] .comm-top-tabs {
+            background: #1b304b;
+            border-bottom-color: #2e4a74;
+        }
+
+        html[data-theme="dark"] .comm-tab-btn {
+            background: #233955;
+            border-color: #3c5f8e;
+            color: #d6e8ff;
+        }
+
+        html[data-theme="dark"] .comm-tab-btn.active {
+            background: linear-gradient(135deg, #2f66c9 0%, #1b97d0 100%);
+            color: #fff;
+        }
+
+        html[data-theme="dark"] .chat-thread,
+        html[data-theme="dark"] .comm-notifications-list {
+            background: linear-gradient(180deg, #1a2d48 0%, #1a2941 100%);
+        }
+
+        html[data-theme="dark"] .chat-empty,
+        html[data-theme="dark"] .comm-notification-time {
+            color: #9eb5d8;
+        }
+
+        html[data-theme="dark"] .chat-bubble.mine {
+            background: #234d31;
+            border-color: #2d6a40;
+        }
+
+        html[data-theme="dark"] .chat-bubble.theirs {
+            background: #20344f;
+            border-color: #35557f;
+        }
+
+        html[data-theme="dark"] .chat-meta {
+            color: #a8c3ea;
+        }
+
+        html[data-theme="dark"] .chat-body {
+            color: #e6efff;
+        }
+
+        html[data-theme="dark"] .comm-notification-item {
+            background: #1f334f;
+            border-color: #35547d;
+        }
+
+        html[data-theme="dark"] .comm-notification-item.unread {
+            background: #264164;
+            border-color: #4b74ab;
+        }
+
+        html[data-theme="dark"] .comm-notification-title {
+            color: #dbe9ff;
+        }
+
+        html[data-theme="dark"] .comm-notification-msg {
+            color: #c7d8f2;
+        }
+
         @media (max-width: 768px) {
             .notification-btn {
                 width: 42px;
@@ -574,6 +785,11 @@
             .notification-menu {
                 right: -10px;
                 width: min(96vw, 360px);
+            }
+
+            .chat-thread,
+            .comm-notifications-list {
+                max-height: 280px;
             }
         }
 
@@ -2633,6 +2849,212 @@
             box-shadow: none;
         }
 
+        /* Premium fixed sidebar navigation */
+        .nav-tabs {
+            position: fixed !important;
+            left: 20px;
+            top: 166px;
+            width: 240px;
+            max-height: calc(100vh - 188px);
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(45, 103, 194, 0.14);
+            box-shadow: 0 18px 36px rgba(25, 66, 136, 0.16);
+            backdrop-filter: blur(8px);
+            z-index: 280;
+        }
+
+        .sidebar-profile {
+            border: 1px solid #d4e2ff;
+            border-radius: 14px;
+            background: linear-gradient(155deg, #f7fbff 0%, #eaf2ff 100%);
+            padding: 12px 11px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-profile-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #c2d7ff;
+            background: #fff;
+            color: #1e5cb2;
+            font-size: 0.9rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .sidebar-profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .sidebar-profile-meta {
+            min-width: 0;
+        }
+
+        .sidebar-profile-name {
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: #19478f;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-profile-role {
+            margin-top: 2px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #5f789f;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-divider {
+            border: none;
+            border-top: 1px dashed #d4e3ff;
+            margin: 2px 0 4px;
+        }
+
+        .tab-content {
+            margin-left: 264px;
+        }
+
+        .tab-btn {
+            position: relative;
+            width: 100%;
+            justify-content: flex-start;
+            border-radius: 12px;
+            font-size: 0.96rem;
+            font-weight: 700;
+            padding: 14px 14px;
+            color: #33517f;
+            background: transparent;
+            border: 1px solid transparent;
+        }
+
+        .tab-btn i {
+            width: 18px;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            background: linear-gradient(135deg, #2a64ce 0%, #1d86d9 100%);
+            border-color: transparent;
+            box-shadow: 0 10px 22px rgba(33, 89, 176, 0.26);
+        }
+
+        .tab-btn.active .tab-count {
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        html[data-theme="dark"] .nav-tabs {
+            background: rgba(20, 35, 56, 0.95) !important;
+            border-color: rgba(88, 132, 214, 0.26) !important;
+            box-shadow: 0 20px 38px rgba(5, 14, 28, 0.55) !important;
+        }
+
+        html[data-theme="dark"] .sidebar-profile {
+            background: linear-gradient(155deg, rgba(35, 57, 85, 0.94) 0%, rgba(30, 50, 76, 0.94) 100%);
+            border-color: rgba(88, 132, 214, 0.34);
+        }
+
+        html[data-theme="dark"] .sidebar-profile-avatar {
+            border-color: #4f76ab;
+            background: #20344f;
+            color: #d9e9ff;
+        }
+
+        html[data-theme="dark"] .sidebar-profile-name {
+            color: #e3efff;
+        }
+
+        html[data-theme="dark"] .sidebar-profile-role {
+            color: #a6bee1;
+        }
+
+        html[data-theme="dark"] .sidebar-divider {
+            border-top-color: rgba(130, 170, 232, 0.34);
+        }
+
+        html[data-theme="dark"] .tab-btn {
+            color: #d2e5ff !important;
+        }
+
+        html[data-theme="dark"] .tab-btn:hover {
+            background: rgba(73, 117, 189, 0.22) !important;
+            border-color: rgba(118, 162, 235, 0.34) !important;
+        }
+
+        @media (max-width: 980px) {
+            .nav-tabs {
+                top: auto;
+                left: 10px !important;
+                right: 10px;
+                bottom: calc(8px + env(safe-area-inset-bottom));
+                width: auto;
+                max-height: none;
+                flex-direction: row;
+                gap: 6px;
+                padding: 8px;
+                border-radius: 14px;
+                overflow: visible;
+            }
+
+            .sidebar-profile,
+            .sidebar-divider {
+                display: none;
+            }
+
+            .tab-content {
+                margin-left: 0;
+                padding-bottom: 94px;
+            }
+
+            .tab-btn {
+                justify-content: center;
+                font-size: 0.72rem;
+                padding: 10px 8px;
+                min-height: 52px;
+                gap: 6px;
+                flex-direction: column;
+            }
+
+            .tab-btn i {
+                width: auto;
+                font-size: 0.95rem;
+            }
+
+            .tab-count {
+                position: absolute;
+                top: 4px;
+                right: 9px;
+                min-width: 18px;
+                height: 18px;
+                font-size: 0.62rem;
+                padding: 0 5px;
+            }
+        }
+
         .badge {
             display: inline-block;
             padding: 4px 10px;
@@ -2654,6 +3076,375 @@
         .mb-20 { margin-bottom: 20px; }
         .mb-30 { margin-bottom: 30px; }
 
+        .dashboard-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .dashboard-kpi-card {
+            border-radius: 14px;
+            padding: 12px 13px;
+            border: 1px solid #d6e5ff;
+            background: linear-gradient(165deg, #ffffff 0%, #f2f8ff 100%);
+            box-shadow: 0 8px 20px rgba(24, 67, 139, 0.12);
+            min-height: 94px;
+        }
+
+        .dashboard-kpi-label {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #5f7396;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .dashboard-kpi-value {
+            font-size: 1.14rem;
+            font-weight: 800;
+            color: #163f81;
+            line-height: 1.25;
+        }
+
+        .dashboard-kpi-note {
+            margin-top: 5px;
+            font-size: 0.76rem;
+            color: #6a7ea0;
+            font-weight: 600;
+        }
+
+        .dashboard-kpi-card.kpi-debt .dashboard-kpi-value { color: #c62828; }
+        .dashboard-kpi-card.kpi-paid .dashboard-kpi-value { color: #2e7d32; }
+        .dashboard-kpi-card.kpi-balance .dashboard-kpi-value { color: #ef6c00; }
+        .dashboard-kpi-card.kpi-clients .dashboard-kpi-value { color: #1f5ba8; }
+
+        html[data-theme="dark"] .dashboard-kpi-card {
+            border-color: #34557d;
+            background: linear-gradient(165deg, #1b2e48 0%, #182a42 100%);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        html[data-theme="dark"] .dashboard-kpi-label {
+            color: #9fb4d8;
+        }
+
+        html[data-theme="dark"] .dashboard-kpi-note {
+            color: #89a2c8;
+        }
+
+        html[data-theme="dark"] .dashboard-kpi-card.kpi-debt .dashboard-kpi-value { color: #ff8a80; }
+        html[data-theme="dark"] .dashboard-kpi-card.kpi-paid .dashboard-kpi-value { color: #82d88f; }
+        html[data-theme="dark"] .dashboard-kpi-card.kpi-balance .dashboard-kpi-value { color: #ffb36b; }
+        html[data-theme="dark"] .dashboard-kpi-card.kpi-clients .dashboard-kpi-value { color: #86b7ff; }
+
+        @media (max-width: 1180px) {
+            .dashboard-kpi-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 620px) {
+            .dashboard-kpi-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        /* Premium list refinement (clients + transactions) */
+        .client-card {
+            border-radius: 14px;
+            border: 1px solid #d5e3ff;
+            box-shadow: 0 12px 24px rgba(17, 65, 139, 0.1);
+        }
+
+        .client-card .client-header {
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .client-card .client-name {
+            font-size: 1.06rem;
+            letter-spacing: 0.01em;
+        }
+
+        .client-card .client-contact {
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .client-card .badge {
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+        }
+
+        .client-overdue-alert {
+            background: #fff1f1;
+            color: #c62828;
+            padding: 9px 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.86rem;
+            border: 1px solid #ffd0d0;
+            font-weight: 700;
+        }
+
+        .client-action-btn {
+            border: 1px solid #d2e1ff;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .transaction-item {
+            border-radius: 14px;
+            border: 1px solid #d7e6ff;
+            box-shadow: 0 10px 24px rgba(19, 65, 136, 0.1);
+        }
+
+        .transaction-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .transaction-type-pill {
+            border-radius: 999px;
+            padding: 5px 9px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .transaction-type-pill.debt {
+            color: #b42318;
+            background: #fff1f0;
+            border-color: #ffcdc8;
+        }
+
+        .transaction-type-pill.payment {
+            color: #1f7a35;
+            background: #ecfdf0;
+            border-color: #bfedc8;
+        }
+
+        .transaction-products {
+            margin-top: 5px;
+        }
+
+        .transaction-product-row {
+            margin-top: 5px;
+        }
+
+        .transaction-type-caption {
+            margin-top: 4px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            opacity: 0.78;
+        }
+
+        .btn:active,
+        .client-action-btn:active,
+        .tab-btn:active,
+        .notification-btn:active,
+        .comm-tab-btn:active {
+            transform: scale(0.985);
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(12px) scale(0.995);
+            transition: opacity 0.36s ease, transform 0.36s ease;
+            will-change: opacity, transform;
+        }
+
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        html[data-theme="dark"] .client-card {
+            border-color: #33557e;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        html[data-theme="dark"] .client-overdue-alert {
+            background: #442126;
+            border-color: #82464c;
+            color: #ffb9b9;
+        }
+
+        html[data-theme="dark"] .client-action-btn {
+            border-color: #3f608c;
+            background: #233956;
+            color: #d9e8ff;
+        }
+
+        html[data-theme="dark"] .transaction-item {
+            border-color: #35557d;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
+        }
+
+        html[data-theme="dark"] .transaction-type-pill.debt {
+            color: #ffc0b9;
+            background: #4a2b31;
+            border-color: #80515a;
+        }
+
+        html[data-theme="dark"] .transaction-type-pill.payment {
+            color: #b9efc5;
+            background: #1f4330;
+            border-color: #397556;
+        }
+
+        /* Mobile-first welcome screen refresh */
+        .login-container {
+            background:
+                radial-gradient(1100px 520px at 85% -10%, rgba(41, 120, 220, 0.22) 0%, transparent 60%),
+                radial-gradient(760px 520px at -8% 108%, rgba(16, 197, 176, 0.18) 0%, transparent 62%),
+                linear-gradient(145deg, #eaf2ff 0%, #dce8ff 55%, #d2e5ff 100%) !important;
+        }
+
+        .login-card {
+            width: min(100%, 460px);
+            padding: 30px 24px !important;
+            border-radius: 24px !important;
+            border: 1px solid rgba(31, 91, 168, 0.17);
+            box-shadow: 0 24px 58px rgba(29, 76, 150, 0.23) !important;
+            text-align: left !important;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(8px);
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            top: -120px;
+            right: -90px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(30, 120, 215, 0.24) 0%, rgba(30, 120, 215, 0) 70%);
+            pointer-events: none;
+        }
+
+        .login-logo {
+            margin: 0 0 14px !important;
+            width: 66px !important;
+            height: 66px !important;
+            border-radius: 16px !important;
+        }
+
+        .login-title {
+            font-size: 1.44rem !important;
+            line-height: 1.2;
+            margin-bottom: 6px !important;
+        }
+
+        .login-subtitle {
+            font-size: 0.93rem;
+            color: #5f78a0 !important;
+            margin-bottom: 14px !important;
+        }
+
+        .login-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid #bfd5ff;
+            background: #f3f8ff;
+            color: #2c5799;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        #login-role,
+        #password-input {
+            min-height: 52px;
+            border-radius: 12px !important;
+            border-color: #c9d9f3 !important;
+            background: #fdfefe;
+            font-weight: 600;
+            margin-bottom: 12px !important;
+        }
+
+        #login-role:focus,
+        #password-input:focus {
+            border-color: #2470d7 !important;
+            box-shadow: 0 0 0 3px rgba(36, 112, 215, 0.18) !important;
+        }
+
+        .login-btn {
+            margin-top: 2px;
+            min-height: 52px;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.01em;
+        }
+
+        .login-error {
+            min-height: 18px !important;
+            margin-top: 12px !important;
+            font-size: 0.88rem;
+        }
+
+        html[data-theme="dark"] .login-container {
+            background:
+                radial-gradient(900px 420px at 85% -10%, rgba(47, 118, 218, 0.28) 0%, transparent 64%),
+                radial-gradient(780px 500px at -10% 110%, rgba(13, 179, 162, 0.2) 0%, transparent 65%),
+                linear-gradient(145deg, #0a1220 0%, #101f37 55%, #122744 100%) !important;
+        }
+
+        html[data-theme="dark"] .login-card {
+            background: rgba(18, 32, 53, 0.92) !important;
+            border-color: rgba(123, 170, 255, 0.24);
+            box-shadow: 0 22px 52px rgba(2, 8, 18, 0.58) !important;
+        }
+
+        html[data-theme="dark"] .login-chip {
+            border-color: rgba(123, 170, 255, 0.34);
+            background: rgba(43, 65, 98, 0.78);
+            color: #d9eaff;
+        }
+
+        html[data-theme="dark"] #login-role,
+        html[data-theme="dark"] #password-input {
+            background: rgba(26, 43, 68, 0.9);
+            border-color: rgba(123, 170, 255, 0.28) !important;
+            color: #e8f1ff;
+        }
+
+        @media (max-width: 520px) {
+            .login-card {
+                border-radius: 20px !important;
+                padding: 24px 18px !important;
+                margin: 14px;
+            }
+
+            .login-logo {
+                width: 58px !important;
+                height: 58px !important;
+            }
+
+            .login-title {
+                font-size: 1.24rem !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -2666,6 +3457,7 @@
             </div>
             <div class="login-title" id="login-brand-name">ADM CALCULATOR</div>
             <div class="login-subtitle" id="login-brand-tagline">Système Expert de Gestion des Dettes</div>
+            <div class="login-chip"><i class="fas fa-shield-alt"></i> Connexion mobile sécurisée</div>
             <select id="login-role" class="login-input">
                 <option value="admin">Admin</option>
                 <option value="client">Client</option>
@@ -2732,6 +3524,14 @@
 
             <!-- Navigation Tabs -->
             <div class="nav-tabs">
+                <div class="sidebar-profile" id="sidebar-profile">
+                    <div class="sidebar-profile-avatar" id="sidebar-profile-avatar">A</div>
+                    <div class="sidebar-profile-meta">
+                        <div class="sidebar-profile-name" id="sidebar-profile-name">Administrateur</div>
+                        <div class="sidebar-profile-role" id="sidebar-profile-role">ADMIN</div>
+                    </div>
+                </div>
+                <hr class="sidebar-divider">
                 <button class="tab-btn active" data-tab="dashboard">
                     <i class="fas fa-tachometer-alt"></i> Tableau de Bord
                 </button>
@@ -2753,6 +3553,28 @@
 
             <!-- Dashboard Tab -->
             <div class="tab-content active" id="dashboard-tab">
+                <div class="dashboard-kpi-grid" id="dashboard-kpi-grid">
+                    <div class="dashboard-kpi-card kpi-debt">
+                        <div class="dashboard-kpi-label">Dette totale</div>
+                        <div class="dashboard-kpi-value" id="kpi-total-debt">0 FC</div>
+                        <div class="dashboard-kpi-note">Montant cumulé des dettes</div>
+                    </div>
+                    <div class="dashboard-kpi-card kpi-paid">
+                        <div class="dashboard-kpi-label">Paiements reçus</div>
+                        <div class="dashboard-kpi-value" id="kpi-total-paid">0 FC</div>
+                        <div class="dashboard-kpi-note">Total des règlements</div>
+                    </div>
+                    <div class="dashboard-kpi-card kpi-balance">
+                        <div class="dashboard-kpi-label">Solde restant</div>
+                        <div class="dashboard-kpi-value" id="kpi-total-balance">0 FC</div>
+                        <div class="dashboard-kpi-note" id="kpi-balance-note">Encours global client</div>
+                    </div>
+                    <div class="dashboard-kpi-card kpi-clients">
+                        <div class="dashboard-kpi-label">Clients actifs</div>
+                        <div class="dashboard-kpi-value" id="kpi-active-clients">0</div>
+                        <div class="dashboard-kpi-note" id="kpi-clients-note">Suivi portefeuille client</div>
+                    </div>
+                </div>
                 <div class="app-layout">
                     <!-- Left Column -->
                     <div class="left-column">
@@ -2836,8 +3658,8 @@
                             <div class="card-header">
                                 <i class="fas fa-comments"></i>
                                 <div>
-                                    <div class="card-title">Messagerie</div>
-                                    <div class="card-subtitle">Communication Client et Gérant</div>
+                                    <div class="card-title">Centre de communication</div>
+                                    <div class="card-subtitle">Messages et notifications organisés</div>
                                 </div>
                             </div>
                             <div class="form-group" id="chat-client-picker-wrap">
@@ -2846,13 +3668,27 @@
                                     <option value="">Sélectionner un client</option>
                                 </select>
                             </div>
-                            <div id="chat-thread" class="form-control" style="min-height:180px; max-height:280px; overflow-y:auto; background:#fff;"></div>
-                            <div class="form-group mt-10">
+                            <div class="chat-shell">
+                                <div class="comm-top-tabs">
+                                    <button type="button" class="comm-tab-btn active" id="comm-tab-messages">
+                                        <i class="fas fa-comment-dots"></i> Messages
+                                    </button>
+                                    <button type="button" class="comm-tab-btn" id="comm-tab-notifications">
+                                        <i class="fas fa-bell"></i> Notifications
+                                    </button>
+                                </div>
+                                <div id="chat-thread" class="chat-thread"></div>
+                                <div id="comm-notifications-panel" class="comm-notifications-list hidden"></div>
+                            </div>
+                            <div class="form-group mt-10" id="chat-input-wrap">
                                 <textarea id="chat-message-input" class="form-control" rows="2" placeholder="Écrire un message..."></textarea>
                             </div>
                             <div class="action-buttons">
                                 <button type="button" class="btn btn-info" id="chat-refresh-btn">
                                     <i class="fas fa-sync-alt"></i> Actualiser
+                                </button>
+                                <button type="button" class="btn btn-warning hidden" id="comm-mark-read-btn">
+                                    <i class="fas fa-check"></i> Tout lire
                                 </button>
                                 <button type="button" class="btn btn-success" id="chat-send-btn">
                                     <i class="fas fa-paper-plane"></i> Envoyer
@@ -3638,9 +4474,11 @@
         let apiToken = sessionStorage.getItem(AUTH_API_TOKEN_KEY) || '';
         let apiBaseUrl = localStorage.getItem(API_BASE_KEY) || 'http://localhost:8080';
         let activeChatClientId = '';
+        let activeCommunicationView = 'messages';
         let socketClient = null;
         let socketScriptLoaded = false;
         let notificationMenuOpen = false;
+        let revealObserver = null;
         try {
             const apiParam = new URLSearchParams(window.location.search).get('api');
             if (apiParam && /^https?:\/\//i.test(apiParam)) {
@@ -3774,6 +4612,61 @@
             refreshProfilePhotoPreview('');
         }
 
+        function updateSidebarProfile() {
+            const avatarEl = document.getElementById('sidebar-profile-avatar');
+            const nameEl = document.getElementById('sidebar-profile-name');
+            const roleEl = document.getElementById('sidebar-profile-role');
+            if (!avatarEl || !nameEl || !roleEl) return;
+
+            const fallbackName = 'Utilisateur';
+            const displayName = currentUser ? (currentUser.displayName || currentUser.username || fallbackName) : 'Visiteur';
+            const roleKey = currentUser ? (currentUser.role || 'client') : '';
+            const roleText = roleKey ? (ROLE_LABELS[roleKey] || roleKey) : '';
+            const photo = currentUser && currentUser.profilePhoto ? String(currentUser.profilePhoto) : '';
+            const initial = (displayName || fallbackName).trim().charAt(0).toUpperCase() || 'U';
+
+            nameEl.textContent = displayName;
+            roleEl.textContent = roleText.toUpperCase();
+
+            if (photo) {
+                avatarEl.innerHTML = `<img src="${escapeHTML(photo)}" alt="${escapeHTML(displayName)}">`;
+            } else {
+                avatarEl.textContent = initial;
+            }
+        }
+
+        function initRevealObserver() {
+            if (revealObserver || !('IntersectionObserver' in window)) return;
+            revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                });
+            }, {
+                root: null,
+                threshold: 0.12,
+                rootMargin: '0px 0px -8% 0px'
+            });
+        }
+
+        function applyRevealAnimations(scope = document) {
+            if (!scope || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            initRevealObserver();
+            if (!revealObserver) return;
+            const nodes = scope.querySelectorAll('.card, .client-card, .transaction-item, .debtor-item, .dashboard-kpi-card');
+            nodes.forEach((node, index) => {
+                if (!(node instanceof HTMLElement)) return;
+                if (!node.classList.contains('reveal-on-scroll')) {
+                    node.classList.add('reveal-on-scroll');
+                    node.style.transitionDelay = `${Math.min(index * 24, 160)}ms`;
+                }
+                if (!node.classList.contains('is-visible')) {
+                    revealObserver.observe(node);
+                }
+            });
+        }
+
         function refreshClientAvatarPreview(photoData = '') {
             const preview = document.getElementById('client-avatar-preview');
             const hidden = document.getElementById('client-avatar-data');
@@ -3858,6 +4751,7 @@
             sessionStorage.setItem(AUTH_USER_KEY, JSON.stringify(currentUser));
 
             applyRoleAccess();
+            updateSidebarProfile();
             loadProfileSettings();
             showToast('Profil mis à jour avec succès', 'success');
         }
@@ -3909,6 +4803,60 @@
             `).join('');
         }
 
+        function renderCommunicationNotificationsPanel() {
+            const panel = document.getElementById('comm-notifications-panel');
+            if (!panel) return;
+
+            const notifications = getCurrentRoleNotifications();
+            if (notifications.length === 0) {
+                panel.innerHTML = '<div class="chat-empty">Aucune notification pour le moment.</div>';
+                return;
+            }
+
+            panel.innerHTML = notifications.slice(0, 18).map(n => `
+                <div class="comm-notification-item ${n.read ? '' : 'unread'}">
+                    <div class="comm-notification-head">
+                        <div class="comm-notification-title" style="color:${escapeHTML(n.color || '#1c4d99')};">
+                            <i class="fas ${escapeHTML(n.icon || 'fa-bell')}"></i>
+                            ${escapeHTML(n.title || 'Notification')}
+                        </div>
+                        <div class="comm-notification-time">${formatDate(n.createdAt)}</div>
+                    </div>
+                    <div class="comm-notification-msg">${escapeHTML(n.message || '')}</div>
+                </div>
+            `).join('');
+        }
+
+        function setCommunicationView(view = 'messages') {
+            const messagesBtn = document.getElementById('comm-tab-messages');
+            const notificationsBtn = document.getElementById('comm-tab-notifications');
+            const thread = document.getElementById('chat-thread');
+            const panel = document.getElementById('comm-notifications-panel');
+            const inputWrap = document.getElementById('chat-input-wrap');
+            const sendBtn = document.getElementById('chat-send-btn');
+            const markReadBtn = document.getElementById('comm-mark-read-btn');
+
+            activeCommunicationView = view === 'notifications' ? 'notifications' : 'messages';
+            const isNotifications = activeCommunicationView === 'notifications';
+
+            if (messagesBtn) messagesBtn.classList.toggle('active', !isNotifications);
+            if (notificationsBtn) notificationsBtn.classList.toggle('active', isNotifications);
+            if (thread) thread.classList.toggle('hidden', isNotifications);
+            if (panel) panel.classList.toggle('hidden', !isNotifications);
+            if (inputWrap) inputWrap.classList.toggle('hidden', isNotifications);
+            if (sendBtn) sendBtn.classList.toggle('hidden', isNotifications);
+            if (markReadBtn) {
+                const canShow = isNotifications && currentUser && currentUser.role === 'client';
+                markReadBtn.classList.toggle('hidden', !canShow);
+            }
+
+            if (isNotifications) {
+                renderCommunicationNotificationsPanel();
+            } else {
+                loadChatThread();
+            }
+        }
+
         function toggleNotificationMenu() {
             const menu = document.getElementById('notification-menu');
             if (!menu) return;
@@ -3943,6 +4891,7 @@
             }
 
             if (notificationMenuOpen) renderNotificationMenu();
+            renderCommunicationNotificationsPanel();
         }
 
         function addClientMovementNotification(transaction, client) {
@@ -4034,13 +4983,13 @@
             const thread = document.getElementById('chat-thread');
             if (!thread) return;
             if (!isApiEnabled() || !apiToken) {
-                thread.innerHTML = '<div style="color:#666;">Chat disponible en mode API uniquement.</div>';
+                thread.innerHTML = '<div class="chat-empty">Chat disponible en mode API uniquement.</div>';
                 return;
             }
 
             const clientId = getCurrentChatClientId();
             if (!clientId) {
-                thread.innerHTML = '<div style="color:#666;">Sélectionnez un client pour afficher la conversation.</div>';
+                thread.innerHTML = '<div class="chat-empty">Sélectionnez un client pour afficher la conversation.</div>';
                 return;
             }
 
@@ -4052,27 +5001,25 @@
                 const items = Array.isArray(rows) ? rows : [];
 
                 if (items.length === 0) {
-                    thread.innerHTML = '<div style="color:#666;">Aucun message.</div>';
+                    thread.innerHTML = '<div class="chat-empty">Aucun message pour cette conversation.</div>';
                     return;
                 }
 
                 thread.innerHTML = items.map(msg => {
                     const isMine = currentUser && currentUser.id === msg.sender_user_id;
-                    const bg = isMine ? '#e8f5e9' : '#eef4ff';
-                    const align = isMine ? 'flex-end' : 'flex-start';
                     const who = msg.sender_role === 'admin' ? 'Gérant' : 'Client';
                     return `
-                        <div style="display:flex;justify-content:${align};margin:6px 0;">
-                            <div style="max-width:85%;background:${bg};border:1px solid #dce6fb;border-radius:10px;padding:8px 10px;">
-                                <div style="font-size:0.8rem;color:#577;">${who} • ${formatDate(msg.created_at)}</div>
-                                <div style="margin-top:3px;color:#223;">${escapeHTML(msg.body || '')}</div>
+                        <div class="chat-row ${isMine ? 'mine' : 'theirs'}">
+                            <div class="chat-bubble ${isMine ? 'mine' : 'theirs'}">
+                                <div class="chat-meta">${who} • ${formatDate(msg.created_at)}</div>
+                                <div class="chat-body">${escapeHTML(msg.body || '')}</div>
                             </div>
                         </div>
                     `;
                 }).join('');
                 thread.scrollTop = thread.scrollHeight;
             } catch (error) {
-                thread.innerHTML = `<div style="color:#c62828;">Erreur chat: ${escapeHTML(error.message)}</div>`;
+                thread.innerHTML = `<div class="chat-empty" style="color:#c62828;">Erreur chat: ${escapeHTML(error.message)}</div>`;
             }
         }
 
@@ -4286,11 +5233,14 @@
             if (chatCard) chatCard.style.display = '';
             const chatPickerWrap = document.getElementById('chat-client-picker-wrap');
             if (chatPickerWrap) chatPickerWrap.style.display = isClientRole ? 'none' : '';
+            const commNotifTabBtn = document.getElementById('comm-tab-notifications');
+            if (commNotifTabBtn) commNotifTabBtn.style.display = isClientRole ? '' : 'none';
 
             const logoutBtn = document.getElementById('logout-btn');
             if (logoutBtn && currentUser) {
                 logoutBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${escapeHTML(currentUser.displayName || currentUser.username)} (${ROLE_LABELS[currentUser.role] || currentUser.role})`;
             }
+            updateSidebarProfile();
 
             const reportsIsActive = reportsTabContent && reportsTabContent.classList.contains('active');
             const settingsIsActive = settingsTabContent && settingsTabContent.classList.contains('active');
@@ -4307,6 +5257,7 @@
             if (isClientRole) {
                 activeChatClientId = currentUser.linkedClientId || '';
             }
+            setCommunicationView('messages');
             loadChatThread();
             updateNotificationCenter();
         }
@@ -4503,6 +5454,7 @@
             closeNotificationMenu();
             isAuthenticated = false;
             currentUser = null;
+            updateSidebarProfile();
             setAppVisibility(false);
             document.getElementById('login-role').value = 'admin';
             document.getElementById('password-input').value = '';
@@ -4981,7 +5933,7 @@
                 notifyDebt: true,
                 notifyPayment: true,
                 notifyOverdue: true,
-                theme: 'light',
+                theme: 'dark',
                 language: 'fr',
                 requirePassword: true,
                 autoSave: 5,
@@ -5038,6 +5990,7 @@
             loadReportClientSelects();
             loadUserLinkedClientOptions();
             applyRoleAccess();
+            updateSidebarProfile();
             renderUsersList();
             toggleUserLinkedClientField();
             
@@ -5052,6 +6005,7 @@
 
             // Update exchange rate display
             updateExchangeRateDisplay();
+            applyRevealAnimations(document.getElementById('main-app'));
         }
 
         function setupEventListeners() {
@@ -5188,6 +6142,20 @@
             document.getElementById('user-role').addEventListener('change', toggleUserLinkedClientField);
             document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
             document.getElementById('chat-refresh-btn').addEventListener('click', loadChatThread);
+            document.getElementById('comm-tab-messages').addEventListener('click', function() {
+                setCommunicationView('messages');
+            });
+            document.getElementById('comm-tab-notifications').addEventListener('click', function() {
+                setCommunicationView('notifications');
+            });
+            document.getElementById('comm-mark-read-btn').addEventListener('click', async function() {
+                const clientId = getCurrentRoleNotificationClientId();
+                if (!clientId) return;
+                await markAllClientNotificationsAsRead(clientId);
+                renderClientPortal();
+                renderCommunicationNotificationsPanel();
+                renderNotificationMenu();
+            });
             document.getElementById('chat-client-select').addEventListener('change', function() {
                 activeChatClientId = this.value || '';
                 loadChatThread();
@@ -5284,6 +6252,9 @@
                 loadReportClientSelects();
             } else if (tabId === 'dashboard') {
                 loadChatThread();
+            }
+            if (selectedTabContent) {
+                applyRevealAnimations(selectedTabContent);
             }
         }
 
@@ -5538,6 +6509,7 @@
                         <p class="mt-10">Ajoutez votre premier client</p>
                     </div>
                 `;
+                applyRevealAnimations(document.getElementById('clients-tab'));
                 return;
             }
 
@@ -5577,7 +6549,7 @@
                         </div>
                     </div>
                     ${overdue ? `
-                        <div style="background: #ffebee; color: #c62828; padding: 8px; border-radius: 6px; margin-top: 10px; font-size: 0.9rem;">
+                        <div class="client-overdue-alert">
                             <i class="fas fa-exclamation-triangle"></i> Paiement en retard
                         </div>
                     ` : ''}
@@ -5606,6 +6578,7 @@
             });
 
             addPagination('clients', visibleClients.length);
+            applyRevealAnimations(document.getElementById('clients-tab'));
         }
 
         function loadClientSelects() {
@@ -6035,6 +7008,7 @@
                         <p>Aucun client trouvé</p>
                     </div>
                 `;
+                applyRevealAnimations(document.getElementById('clients-tab'));
                 return;
             }
 
@@ -6067,6 +7041,11 @@
                             ${formatCurrency(balance)}
                         </div>
                     </div>
+                    ${overdue ? `
+                        <div class="client-overdue-alert">
+                            <i class="fas fa-exclamation-triangle"></i> Paiement en retard
+                        </div>
+                    ` : ''}
                     <div class="client-actions">
                         <button class="client-action-btn" data-action="edit">
                             <i class="fas fa-edit"></i> Modifier
@@ -6080,6 +7059,7 @@
                 clientCard.querySelector('[data-action="details"]').addEventListener('click', () => viewClientDetails(client.id));
                 clientsList.appendChild(clientCard);
             });
+            applyRevealAnimations(document.getElementById('clients-tab'));
         }
 
         function resetClientForm() {
@@ -6106,6 +7086,7 @@
                         <p>Aucune transaction enregistrée</p>
                     </div>
                 `;
+                applyRevealAnimations(document.getElementById('transactions-tab'));
                 return;
             }
 
@@ -6120,6 +7101,7 @@
             });
 
             addPagination('transactions', filteredTransactions.length);
+            applyRevealAnimations(document.getElementById('transactions-tab'));
         }
 
         function filterTransactionsList() {
@@ -6177,17 +7159,17 @@
                     const itemQty = escapeHTML(item.quantity || '');
                     const itemUnitPrice = Number(item.unitPrice || 0);
                     return `
-                        <div style="margin-top: 5px;">
+                        <div class="transaction-product-row">
                             <span class="product-badge"><i class="fas fa-box"></i> ${itemName || 'Article'}</span>
                             ${itemQty ? `<span class="product-badge">Qté: ${itemQty}</span>` : ''}
                             ${itemUnitPrice > 0 ? `<span class="product-badge">PU: ${formatCurrency(itemUnitPrice)}</span>` : ''}
                         </div>
                     `;
                 }).join('');
-                productHTML = `<div style="margin-top: 5px;">${itemsHTML}</div>`;
+                productHTML = `<div class="transaction-products">${itemsHTML}</div>`;
             } else if (transaction.productName) {
                 productHTML = `
-                    <div style="margin-top: 5px;">
+                    <div class="transaction-products">
                         <span class="product-badge"><i class="fas fa-box"></i> ${safeProductName}</span>
                         ${transaction.productQuantity ? `<span class="product-badge">Qté: ${safeProductQuantity}</span>` : ''}
                     </div>
@@ -6196,7 +7178,10 @@
             
             div.innerHTML = `
                 <div class="transaction-info">
-                    <div class="transaction-client">${safeClientName}</div>
+                    <div class="transaction-top">
+                        <div class="transaction-client">${safeClientName}</div>
+                        <span class="transaction-type-pill ${transaction.type}">${typeText}</span>
+                    </div>
                     ${productHTML}
                     <div class="transaction-desc">${safeDescription}</div>
                     <div class="transaction-date">
@@ -6217,7 +7202,7 @@
                 </div>
                 <div class="transaction-amount ${amountClass}">
                     ${amountSign} ${formatCurrency(transaction.amount)}
-                    <div class="transaction-meta">${typeText}</div>
+                    <div class="transaction-type-caption">${typeText}</div>
                 </div>
             `;
 
@@ -6835,7 +7820,46 @@
 
         // =============== DASHBOARD ===============
         function updateDashboard() {
+            updateDashboardKpis();
             updateTopClients();
+        }
+
+        function updateDashboardKpis() {
+            const debtEl = document.getElementById('kpi-total-debt');
+            const paidEl = document.getElementById('kpi-total-paid');
+            const balanceEl = document.getElementById('kpi-total-balance');
+            const clientsEl = document.getElementById('kpi-active-clients');
+            const balanceNoteEl = document.getElementById('kpi-balance-note');
+            const clientsNoteEl = document.getElementById('kpi-clients-note');
+            if (!debtEl || !paidEl || !balanceEl || !clientsEl) return;
+
+            const visibleTx = getVisibleTransactions();
+            const visibleClients = getVisibleClients();
+
+            const totalDebt = visibleTx
+                .filter(t => t.type === 'debt')
+                .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+            const totalPaid = visibleTx
+                .filter(t => t.type === 'payment')
+                .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+            const totalBalance = Math.max(0, totalDebt - totalPaid);
+            const activeClients = visibleClients.filter(c => c.active !== false).length;
+
+            debtEl.textContent = formatCurrency(totalDebt);
+            paidEl.textContent = formatCurrency(totalPaid);
+            balanceEl.textContent = formatCurrency(totalBalance);
+            clientsEl.textContent = String(activeClients);
+
+            if (balanceNoteEl) {
+                balanceNoteEl.textContent = totalBalance > 0
+                    ? `${formatCurrency(totalBalance)} à recouvrer`
+                    : 'Aucun encours restant';
+            }
+            if (clientsNoteEl) {
+                clientsNoteEl.textContent = currentUser && currentUser.role === 'client'
+                    ? 'Votre compte client actif'
+                    : `${visibleClients.length} client(s) au total`;
+            }
         }
 
         function updateTopClients() {
@@ -6858,6 +7882,7 @@
                         <p>Aucun client avec dette</p>
                     </div>
                 `;
+                applyRevealAnimations(document.getElementById('dashboard-tab'));
                 return;
             }
 
@@ -6885,6 +7910,7 @@
                 `;
                 container.appendChild(item);
             });
+            applyRevealAnimations(document.getElementById('dashboard-tab'));
         }
 
         // =============== REPORTS ===============
@@ -7311,7 +8337,7 @@
             document.getElementById('setting-notify-debt').checked = settings.notifyDebt !== false;
             document.getElementById('setting-notify-payment').checked = settings.notifyPayment !== false;
             document.getElementById('setting-notify-overdue').checked = settings.notifyOverdue !== false;
-            document.getElementById('setting-theme').value = settings.theme || 'light';
+            document.getElementById('setting-theme').value = settings.theme || 'dark';
             document.getElementById('setting-language').value = settings.language || 'fr';
             document.getElementById('setting-require-password').checked = settings.requirePassword !== false;
             document.getElementById('setting-auto-save').value = settings.autoSave || 5;
