@@ -8332,24 +8332,33 @@
 
         // =============== SETTINGS ===============
         function loadSettings() {
-            document.getElementById('setting-main-currency').value = settings.mainCurrency || 'FC';
-            document.getElementById('setting-default-rate').value = settings.defaultRate || 2700;
-            document.getElementById('setting-notify-debt').checked = settings.notifyDebt !== false;
-            document.getElementById('setting-notify-payment').checked = settings.notifyPayment !== false;
-            document.getElementById('setting-notify-overdue').checked = settings.notifyOverdue !== false;
-            document.getElementById('setting-theme').value = settings.theme || 'dark';
-            document.getElementById('setting-language').value = settings.language || 'fr';
-            document.getElementById('setting-require-password').checked = settings.requirePassword !== false;
-            document.getElementById('setting-auto-save').value = settings.autoSave || 5;
-            document.getElementById('setting-client-limit').value = settings.clientLimit || 1000;
-            document.getElementById('setting-auto-archive').value = settings.autoArchive || 90;
-            document.getElementById('setting-report-format').value = settings.reportFormat || 'html';
-            document.getElementById('setting-brand-name').value = settings.brandName || 'ADM CALCULATOR';
-            document.getElementById('setting-brand-tagline').value = settings.brandTagline || 'Système expert de gestion des dettes';
+            const setValue = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.value = value;
+            };
+            const setChecked = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.checked = value;
+            };
+
+            setValue('setting-main-currency', settings.mainCurrency || 'FC');
+            setValue('setting-default-rate', settings.defaultRate || 2700);
+            setChecked('setting-notify-debt', settings.notifyDebt !== false);
+            setChecked('setting-notify-payment', settings.notifyPayment !== false);
+            setChecked('setting-notify-overdue', settings.notifyOverdue !== false);
+            setValue('setting-theme', settings.theme || 'dark');
+            setValue('setting-language', settings.language || 'fr');
+            setChecked('setting-require-password', settings.requirePassword !== false);
+            setValue('setting-auto-save', settings.autoSave || 5);
+            setValue('setting-client-limit', settings.clientLimit || 1000);
+            setValue('setting-auto-archive', settings.autoArchive || 90);
+            setValue('setting-report-format', settings.reportFormat || 'html');
+            setValue('setting-brand-name', settings.brandName || 'ADM CALCULATOR');
+            setValue('setting-brand-tagline', settings.brandTagline || 'Système expert de gestion des dettes');
             refreshBrandLogoSettingPreview(settings.brandLogoUrl);
             const brandLogoInput = document.getElementById('setting-brand-logo-input');
             if (brandLogoInput) brandLogoInput.value = '';
-            document.getElementById('setting-admin-password').value = '';
+            setValue('setting-admin-password', '');
             applyBranding();
             applyTheme();
             formatAllFCInputs();
