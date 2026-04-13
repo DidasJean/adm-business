@@ -1,4 +1,4 @@
-const CACHE_NAME = 'adm-calculator-v1';
+const CACHE_NAME = 'adm-calculator-v2';
 const APP_SHELL = [
   './',
   './adm-calculator.html',
@@ -29,22 +29,37 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const requestUrl = new URL(event.request.url);
+  const isSameOrigin = requestUrl.origin === self.location.origin;
+  const isHtmlRequest = event.request.mode === 'navigate' || (event.request.headers.get('accept') || '').includes('text/html');
+
+  // Always prefer network for HTML/navigation to avoid stale app shells.
+  if (isHtmlRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            if (isSameOrigin) cache.put(event.request, responseClone);
+          });
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./adm-calculator.html')))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
-
       return fetch(event.request)
         .then((response) => {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            if (event.request.url.startsWith(self.location.origin)) {
-              cache.put(event.request, responseClone);
-            }
+            if (isSameOrigin) cache.put(event.request, responseClone);
           });
           return response;
-        })
-        .catch(() => caches.match('./adm-calculator.html'));
+        });
     })
   );
 });
