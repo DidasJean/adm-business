@@ -4235,25 +4235,6 @@
                             </p>
                         </div>
                         
-                        <div class="setting-card" id="settings-notifications-card" style="display:none;">
-                            <div class="setting-title">Notifications</div>
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <input type="checkbox" id="setting-notify-debt" checked> Alertes nouvelles dettes
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <input type="checkbox" id="setting-notify-payment" checked> Alertes paiements reçus
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <input type="checkbox" id="setting-notify-overdue" checked> Alertes dettes échues
-                                </label>
-                            </div>
-                        </div>
-                        
                         <div class="setting-card">
                             <div class="setting-title">Apparence</div>
                             <div class="form-group">
@@ -4262,13 +4243,6 @@
                                     <option value="light">Clair</option>
                                     <option value="dark">Sombre</option>
                                     <option value="blue">Bleu</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Langue</label>
-                                <select id="setting-language" class="form-control">
-                                    <option value="fr">Français</option>
-                                    <option value="en">English</option>
                                 </select>
                             </div>
                         </div>
@@ -4310,122 +4284,25 @@
                         <div class="setting-card">
                             <div class="setting-title">Sécurité</div>
                             <div class="form-group">
-                                <label class="form-label">
-                                    <input type="checkbox" id="setting-require-password" checked> Mot de passe requis
-                                </label>
-                            </div>
-                            <div class="form-group">
                                 <label class="form-label">Nouveau mot de passe administrateur</label>
                                 <input type="password" id="setting-admin-password" class="form-control" placeholder="Laisser vide pour conserver l'actuel">
                                 <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">
                                     Minimum 6 caractères. Le mot de passe est stocké localement sur cet appareil.
                                 </p>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Sauvegarde automatique</label>
-                                <select id="setting-auto-save" class="form-control">
-                                    <option value="1">Toutes les minutes</option>
-                                    <option value="5" selected>Toutes les 5 minutes</option>
-                                    <option value="10">Toutes les 10 minutes</option>
-                                    <option value="30">Toutes les 30 minutes</option>
-                                </select>
-                            </div>
                         </div>
                         
                         <div class="setting-card">
                             <div class="setting-title">Données</div>
-                            <div class="form-group" style="display:none;">
-                                <label class="form-label">Limite de clients</label>
-                                <input type="text" id="setting-client-limit" class="form-control" value="1000" inputmode="numeric">
-                            </div>
-                            <div class="form-group" style="display:none;">
-                                <label class="form-label">Archivage automatique</label>
-                                <select id="setting-auto-archive" class="form-control">
-                                    <option value="30">Après 30 jours</option>
-                                    <option value="90" selected>Après 90 jours</option>
-                                    <option value="180">Après 180 jours</option>
-                                    <option value="365">Après 1 an</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="display:none;">
-                                <label class="form-label">Statut du Système</label>
-                                <div class="form-control" style="background: #f8f9ff; color: #4b5a78;">
-                                    Informations et sauvegarde
-                                </div>
-                            </div>
+                            <p style="font-size: 0.88rem; color: #5f7396; margin-bottom: 14px;">
+                                Sauvegarder ou restaurer vos données rapidement.
+                            </p>
                             <div class="form-row">
                                 <button class="btn btn-success" id="backup-data" type="button">
                                     <i class="fas fa-save"></i> Sauvegarder
                                 </button>
                                 <button class="btn btn-warning" id="restore-data" type="button">
                                     <i class="fas fa-undo"></i> Restaurer
-                                </button>
-                                <button class="btn btn-danger" id="clear-data" type="button">
-                                    <i class="fas fa-trash"></i> Réinitialiser
-                                </button>
-                            </div>
-                            <div class="form-group mt-20" style="display:none;">
-                                <label class="form-label">Sauvegarde automatique</label>
-                                <div class="form-control" style="background: #e8f5e9; color: #2e7d32; font-weight: 600;">
-                                    <i class="fas fa-check-circle"></i> Activée (toutes les 5 minutes)
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="setting-card" id="settings-report-pref-card" style="display:none;">
-                            <div class="setting-title">Rapports</div>
-                            <div class="form-group">
-                                <label class="form-label">Format par défaut</label>
-                                <select id="setting-report-format" class="form-control">
-                                    <option value="html">HTML</option>
-                                    <option value="excel">Excel</option>
-                                    <option value="json">JSON</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="setting-card" id="users-management-card">
-                            <div class="setting-title">Utilisateurs et Rôles</div>
-                            <div class="form-group">
-                                <label class="form-label">Liste des utilisateurs</label>
-                                <div id="users-list" class="form-control" style="min-height: 120px; background: #fff;"></div>
-                            </div>
-                            <input type="hidden" id="user-id" value="">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Nom complet</label>
-                                    <input type="text" id="user-display-name" class="form-control" placeholder="Ex: Jean Admin">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Identifiant</label>
-                                    <input type="text" id="user-username" class="form-control" placeholder="Ex: jean">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Rôle</label>
-                                    <select id="user-role" class="form-control">
-                                        <option value="client">Client</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Mot de passe</label>
-                                    <input type="password" id="user-password" class="form-control" placeholder="Mot de passe utilisateur">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Client lié (si rôle = client)</label>
-                                <select id="user-linked-client" class="form-control">
-                                    <option value="">Sélectionner un client</option>
-                                </select>
-                            </div>
-                            <div class="action-buttons">
-                                <button class="btn btn-success" id="save-user-btn" type="button">
-                                    <i class="fas fa-user-plus"></i> Enregistrer utilisateur
-                                </button>
-                                <button class="btn btn-info" id="reset-user-btn" type="button">
-                                    <i class="fas fa-redo"></i> Nouveau
                                 </button>
                             </div>
                         </div>
@@ -8436,7 +8313,18 @@
 
         function saveSettings() {
             if (!enforcePermission('admin', 'Paramètres réservés à l’admin')) return;
-            const newAdminPassword = document.getElementById('setting-admin-password').value.trim();
+            const getValue = (id, fallback = '') => {
+                const el = document.getElementById(id);
+                if (!el) return fallback;
+                return typeof el.value === 'string' ? el.value : fallback;
+            };
+            const getChecked = (id, fallback = false) => {
+                const el = document.getElementById(id);
+                if (!el) return fallback;
+                return Boolean(el.checked);
+            };
+
+            const newAdminPassword = String(getValue('setting-admin-password', '')).trim();
 
             if (newAdminPassword && newAdminPassword.length < 6) {
                 showToast('Le mot de passe administrateur doit contenir au moins 6 caractères', 'error');
@@ -8444,26 +8332,26 @@
             }
 
             settings = {
-                mainCurrency: document.getElementById('setting-main-currency').value,
-                defaultRate: parseLooseNumber(document.getElementById('setting-default-rate').value) || 2700,
-                notifyDebt: document.getElementById('setting-notify-debt').checked,
-                notifyPayment: document.getElementById('setting-notify-payment').checked,
-                notifyOverdue: document.getElementById('setting-notify-overdue').checked,
-                theme: document.getElementById('setting-theme').value,
-                language: document.getElementById('setting-language').value,
-                requirePassword: document.getElementById('setting-require-password').checked,
-                autoSave: parseInt(document.getElementById('setting-auto-save').value) || 5,
-                clientLimit: parseInt(document.getElementById('setting-client-limit').value) || 1000,
-                autoArchive: parseInt(document.getElementById('setting-auto-archive').value) || 90,
-                reportFormat: document.getElementById('setting-report-format').value,
-                brandName: (document.getElementById('setting-brand-name').value || 'ADM CALCULATOR').trim(),
-                brandTagline: (document.getElementById('setting-brand-tagline').value || 'Système expert de gestion des dettes').trim(),
+                mainCurrency: getValue('setting-main-currency', settings.mainCurrency || 'FC'),
+                defaultRate: parseLooseNumber(getValue('setting-default-rate', String(settings.defaultRate || 2700))) || 2700,
+                notifyDebt: getChecked('setting-notify-debt', settings.notifyDebt !== false),
+                notifyPayment: getChecked('setting-notify-payment', settings.notifyPayment !== false),
+                notifyOverdue: getChecked('setting-notify-overdue', settings.notifyOverdue !== false),
+                theme: getValue('setting-theme', settings.theme || 'dark'),
+                language: getValue('setting-language', settings.language || 'fr'),
+                requirePassword: getChecked('setting-require-password', settings.requirePassword !== false),
+                autoSave: parseInt(getValue('setting-auto-save', String(settings.autoSave || 5))) || 5,
+                clientLimit: parseInt(getValue('setting-client-limit', String(settings.clientLimit || 1000))) || 1000,
+                autoArchive: parseInt(getValue('setting-auto-archive', String(settings.autoArchive || 90))) || 90,
+                reportFormat: getValue('setting-report-format', settings.reportFormat || 'html'),
+                brandName: (getValue('setting-brand-name', settings.brandName || 'ADM CALCULATOR') || 'ADM CALCULATOR').trim(),
+                brandTagline: (getValue('setting-brand-tagline', settings.brandTagline || 'Système expert de gestion des dettes') || 'Système expert de gestion des dettes').trim(),
                 brandInitials: (settings.brandInitials || '').trim().toUpperCase().slice(0, 4),
                 brandBadge: (settings.brandBadge || 'PRO').trim().toUpperCase().slice(0, 10),
                 brandPrimary: settings.brandPrimary || '#0f2d5c',
                 brandSecondary: settings.brandSecondary || '#1f5ba8',
                 brandAccent: settings.brandAccent || '#0ea5a8',
-                brandLogoUrl: normalizeBrandLogoUrl(document.getElementById('setting-brand-logo-data').value),
+                brandLogoUrl: normalizeBrandLogoUrl(getValue('setting-brand-logo-data', settings.brandLogoUrl || '')),
                 updatedAt: new Date().toISOString()
             };
 
