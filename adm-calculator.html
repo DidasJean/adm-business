@@ -6009,6 +6009,13 @@
         }
 
         function setupEventListeners() {
+            const byId = (id) => document.getElementById(id);
+            const on = (id, event, handler) => {
+                const el = byId(id);
+                if (!el) return;
+                el.addEventListener(event, handler);
+            };
+
             // Tab navigation
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -6018,40 +6025,42 @@
             });
 
             // Quick actions
-            document.getElementById('quick-add-client').addEventListener('click', () => {
+            on('quick-add-client', 'click', () => {
                 switchTab('clients');
                 resetClientForm();
             });
-            document.getElementById('quick-add-debt').addEventListener('click', () => {
+            on('quick-add-debt', 'click', () => {
                 switchTab('transactions');
-                document.getElementById('transaction-type').value = 'debt';
+                const typeField = byId('transaction-type');
+                if (typeField) typeField.value = 'debt';
                 showTransactionTypeSection('debt');
             });
-            document.getElementById('quick-add-payment').addEventListener('click', () => {
+            on('quick-add-payment', 'click', () => {
                 switchTab('transactions');
-                document.getElementById('transaction-type').value = 'payment';
+                const typeField = byId('transaction-type');
+                if (typeField) typeField.value = 'payment';
                 showTransactionTypeSection('payment');
             });
 
             // Exchange rate
-            document.getElementById('update-exchange-rate').addEventListener('click', updateExchangeRate);
+            on('update-exchange-rate', 'click', updateExchangeRate);
 
             // Client form
-            document.getElementById('client-form').addEventListener('submit', handleClientSubmit);
-            document.getElementById('client-cancel-btn').addEventListener('click', resetClientForm);
-            document.getElementById('client-reset-btn').addEventListener('click', resetClientForm);
-            document.getElementById('client-avatar-input').addEventListener('change', handleClientAvatarSelected);
-            document.getElementById('client-remove-avatar-btn').addEventListener('click', removeClientAvatar);
-            document.getElementById('client-search').addEventListener('input', filterClients);
-            document.getElementById('client-filter-status').addEventListener('change', filterClients);
+            on('client-form', 'submit', handleClientSubmit);
+            on('client-cancel-btn', 'click', resetClientForm);
+            on('client-reset-btn', 'click', resetClientForm);
+            on('client-avatar-input', 'change', handleClientAvatarSelected);
+            on('client-remove-avatar-btn', 'click', removeClientAvatar);
+            on('client-search', 'input', filterClients);
+            on('client-filter-status', 'change', filterClients);
 
             // Transaction form
-            document.getElementById('transaction-form').addEventListener('submit', handleTransactionSubmit);
-            document.getElementById('transaction-type').addEventListener('change', function() {
+            on('transaction-form', 'submit', handleTransactionSubmit);
+            on('transaction-type', 'change', function() {
                 showTransactionTypeSection(this.value);
             });
-            document.getElementById('transaction-cancel-btn').addEventListener('click', resetTransactionForm);
-            document.getElementById('transaction-reset-btn').addEventListener('click', resetTransactionForm);
+            on('transaction-cancel-btn', 'click', resetTransactionForm);
+            on('transaction-reset-btn', 'click', resetTransactionForm);
 
             // FC input formatters (thousands separators)
             attachFCInputFormatter('debt-amount-fc', 0);
@@ -6062,32 +6071,32 @@
             attachFCInputFormatter('setting-default-rate', 0);
             
             // Currency conversion - FC instead of FCFA
-            document.getElementById('debt-amount-fc').addEventListener('input', function() {
+            on('debt-amount-fc', 'input', function() {
                 convertCurrency('fc', 'usd', 'debt');
                 syncProductUnitPriceFromDebtAmount();
             });
-            document.getElementById('debt-amount-usd').addEventListener('input', function() {
+            on('debt-amount-usd', 'input', function() {
                 convertCurrency('usd', 'fc', 'debt');
             });
-            document.getElementById('payment-amount-fc').addEventListener('input', function() {
+            on('payment-amount-fc', 'input', function() {
                 convertCurrency('fc', 'usd', 'payment');
             });
-            document.getElementById('payment-amount-usd').addEventListener('input', function() {
+            on('payment-amount-usd', 'input', function() {
                 convertCurrency('usd', 'fc', 'payment');
             });
             
-            document.getElementById('toggle-debt-currency').addEventListener('click', function() {
+            on('toggle-debt-currency', 'click', function() {
                 toggleCurrencyFocus('debt');
             });
-            document.getElementById('toggle-payment-currency').addEventListener('click', function() {
+            on('toggle-payment-currency', 'click', function() {
                 toggleCurrencyFocus('payment');
             });
 
             // Product details toggle
-            document.getElementById('toggle-product-details').addEventListener('click', toggleProductDetails);
-            document.getElementById('product-quantity').addEventListener('input', autoFillDebtAmountFromProductDetails);
-            document.getElementById('product-unit-price').addEventListener('input', autoFillDebtAmountFromProductDetails);
-            document.getElementById('add-product-item-btn').addEventListener('click', addProductItemRow);
+            on('toggle-product-details', 'click', toggleProductDetails);
+            on('product-quantity', 'input', autoFillDebtAmountFromProductDetails);
+            on('product-unit-price', 'input', autoFillDebtAmountFromProductDetails);
+            on('add-product-item-btn', 'click', addProductItemRow);
 
             // Payment methods
             document.querySelectorAll('.payment-method').forEach(method => {
@@ -6097,26 +6106,26 @@
             });
 
             // Transaction filters
-            document.getElementById('transaction-filter-type').addEventListener('change', filterTransactions);
-            document.getElementById('transaction-filter-client').addEventListener('change', filterTransactions);
-            document.getElementById('transaction-filter-date').addEventListener('change', filterTransactions);
+            on('transaction-filter-type', 'change', filterTransactions);
+            on('transaction-filter-client', 'change', filterTransactions);
+            on('transaction-filter-date', 'change', filterTransactions);
 
             // Reports
-            document.getElementById('report-client-detail').addEventListener('click', function() {
+            on('report-client-detail', 'click', function() {
                 prepareReport('client-detail');
             });
-            document.getElementById('report-debtors').addEventListener('click', function() {
+            on('report-debtors', 'click', function() {
                 prepareReport('debtors');
             });
-            document.getElementById('generate-selected-report').addEventListener('click', generateReport);
+            on('generate-selected-report', 'click', generateReport);
 
             // Data management
-            document.getElementById('backup-data').addEventListener('click', showBackupModal);
-            document.getElementById('restore-data').addEventListener('click', showBackupModal);
-            document.getElementById('clear-data').addEventListener('click', confirmClearData);
-            document.getElementById('download-backup').addEventListener('click', downloadBackup);
-            document.getElementById('restore-backup').addEventListener('click', restoreBackup);
-            document.getElementById('copy-backup').addEventListener('click', copyBackup);
+            on('backup-data', 'click', showBackupModal);
+            on('restore-data', 'click', showBackupModal);
+            on('clear-data', 'click', confirmClearData);
+            on('download-backup', 'click', downloadBackup);
+            on('restore-backup', 'click', restoreBackup);
+            on('copy-backup', 'click', copyBackup);
 
             // Save when app goes to background (mobile safety)
             document.addEventListener('visibilitychange', function() {
@@ -6130,25 +6139,25 @@
             });
 
             // Settings
-            document.getElementById('save-profile-btn').addEventListener('click', saveCurrentUserProfile);
-            document.getElementById('profile-photo-input').addEventListener('change', handleProfilePhotoSelected);
-            document.getElementById('profile-remove-photo-btn').addEventListener('click', removeProfilePhoto);
-            document.getElementById('setting-brand-logo-input').addEventListener('change', handleBrandLogoSelected);
-            document.getElementById('setting-brand-logo-remove-btn').addEventListener('click', removeBrandLogoSetting);
-            document.getElementById('save-settings').addEventListener('click', saveSettings);
-            document.getElementById('reset-settings').addEventListener('click', resetSettings);
-            document.getElementById('save-user-btn').addEventListener('click', handleUserSubmit);
-            document.getElementById('reset-user-btn').addEventListener('click', resetUserForm);
-            document.getElementById('user-role').addEventListener('change', toggleUserLinkedClientField);
-            document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
-            document.getElementById('chat-refresh-btn').addEventListener('click', loadChatThread);
-            document.getElementById('comm-tab-messages').addEventListener('click', function() {
+            on('save-profile-btn', 'click', saveCurrentUserProfile);
+            on('profile-photo-input', 'change', handleProfilePhotoSelected);
+            on('profile-remove-photo-btn', 'click', removeProfilePhoto);
+            on('setting-brand-logo-input', 'change', handleBrandLogoSelected);
+            on('setting-brand-logo-remove-btn', 'click', removeBrandLogoSetting);
+            on('save-settings', 'click', saveSettings);
+            on('reset-settings', 'click', resetSettings);
+            on('save-user-btn', 'click', handleUserSubmit);
+            on('reset-user-btn', 'click', resetUserForm);
+            on('user-role', 'change', toggleUserLinkedClientField);
+            on('chat-send-btn', 'click', sendChatMessage);
+            on('chat-refresh-btn', 'click', loadChatThread);
+            on('comm-tab-messages', 'click', function() {
                 setCommunicationView('messages');
             });
-            document.getElementById('comm-tab-notifications').addEventListener('click', function() {
+            on('comm-tab-notifications', 'click', function() {
                 setCommunicationView('notifications');
             });
-            document.getElementById('comm-mark-read-btn').addEventListener('click', async function() {
+            on('comm-mark-read-btn', 'click', async function() {
                 const clientId = getCurrentRoleNotificationClientId();
                 if (!clientId) return;
                 await markAllClientNotificationsAsRead(clientId);
@@ -6156,39 +6165,39 @@
                 renderCommunicationNotificationsPanel();
                 renderNotificationMenu();
             });
-            document.getElementById('chat-client-select').addEventListener('change', function() {
+            on('chat-client-select', 'change', function() {
                 activeChatClientId = this.value || '';
                 loadChatThread();
             });
-            document.getElementById('chat-message-input').addEventListener('keypress', function(e) {
+            on('chat-message-input', 'keypress', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     sendChatMessage();
                 }
             });
-            document.getElementById('notification-btn').addEventListener('click', function(event) {
+            on('notification-btn', 'click', function(event) {
                 event.stopPropagation();
                 toggleNotificationMenu();
             });
-            document.getElementById('notification-mark-all-btn').addEventListener('click', async function() {
+            on('notification-mark-all-btn', 'click', async function() {
                 const clientId = getCurrentRoleNotificationClientId();
                 if (!clientId) return;
                 await markAllClientNotificationsAsRead(clientId);
                 renderClientPortal();
                 renderNotificationMenu();
             });
-            document.getElementById('notification-open-dashboard-btn').addEventListener('click', function() {
+            on('notification-open-dashboard-btn', 'click', function() {
                 switchTab('dashboard');
                 closeNotificationMenu();
             });
-            document.getElementById('setting-theme').addEventListener('change', function() {
+            on('setting-theme', 'change', function() {
                 document.documentElement.setAttribute('data-theme', this.value || 'light');
             });
             refreshClientAvatarPreview('');
 
             // Modal close buttons
-            document.getElementById('close-client-detail').addEventListener('click', closeModal);
-            document.getElementById('close-backup').addEventListener('click', closeModal);
+            on('close-client-detail', 'click', closeModal);
+            on('close-backup', 'click', closeModal);
 
             // Click outside modal to close
             window.addEventListener('click', function(e) {
