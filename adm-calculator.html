@@ -5359,9 +5359,12 @@
 
         function registerServiceWorker() {
             if (!('serviceWorker' in navigator)) return;
-            navigator.serviceWorker.register('./sw.js').catch(() => {
-                // silent fail
-            });
+            // Temporary hardening: avoid stale cached UI that can break button handlers.
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+                registrations.forEach((registration) => {
+                    registration.unregister().catch(() => {});
+                });
+            }).catch(() => {});
         }
 
         // Check authentication on load
