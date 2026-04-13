@@ -5956,6 +5956,11 @@
 
         // =============== INITIALIZATION ===============
         async function initializeApp() {
+            if (!listenersAttached) {
+                setupEventListeners();
+                listenersAttached = true;
+            }
+
             requestPersistentStorage();
             // Set current date
             const now = new Date();
@@ -5996,13 +6001,7 @@
             updateSidebarProfile();
             renderUsersList();
             toggleUserLinkedClientField();
-            
-            // Setup event listeners once
-            if (!listenersAttached) {
-                setupEventListeners();
-                listenersAttached = true;
-            }
-            
+
             // Start auto-save
             startAutoSave();
 
