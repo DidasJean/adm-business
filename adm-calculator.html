@@ -4400,6 +4400,7 @@
             emergencySnapshot: 'adm_emergency_snapshot',
             emergencySnapshotHistory: 'adm_emergency_snapshot_history'
         };
+        const REMOTE_SOURCE_OF_TRUTH = true;
         let isAuthenticated = sessionStorage.getItem('adm_auth') === 'true';
         let currentUser = null;
         let autoSaveIntervalId = null;
@@ -4414,6 +4415,7 @@
         let socketScriptLoaded = false;
         let notificationMenuOpen = false;
         let revealObserver = null;
+        let storageQuotaWarningShown = false;
         try {
             const apiParam = new URLSearchParams(window.location.search).get('api');
             if (apiParam && /^https?:\/\//i.test(apiParam)) {
@@ -4853,7 +4855,7 @@
             if (clientNotifications.length > 500) {
                 clientNotifications = clientNotifications.slice(0, 500);
             }
-            localStorage.setItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
+            safeStorageSetItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
             createEmergencySnapshot('addClientMovementNotification');
             updateNotificationCenter();
         }
@@ -4864,7 +4866,7 @@
                     await apiRequest('/api/notifications/mark-read-all', { method: 'POST' });
                     const notifData = await apiRequest('/api/notifications');
                     clientNotifications = Array.isArray(notifData) ? notifData.map(mapApiNotification) : [];
-                    localStorage.setItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
+                    safeStorageSetItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
                     createEmergencySnapshot('markAllClientNotificationsAsReadApi');
                     updateNotificationCenter();
                     return;
@@ -4882,7 +4884,7 @@
                 return n;
             });
             if (!changed) return;
-            localStorage.setItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
+            safeStorageSetItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
             createEmergencySnapshot('markAllClientNotificationsAsRead');
             updateNotificationCenter();
         }
@@ -5426,26 +5428,85 @@
             return Number.isFinite(value) ? value : fallback;
         }
 
+        function isQuotaExceededError(error) {
+            if (!error) return false;
+            const message = String(error.message || error || '').toLowerCase();
+            return error.name === 'QuotaExceededError' || message.includes('quota') || message.includes('storage');
+        }
+
+        function isBusinessStorageKey(key) {
+            return key === STORAGE_KEYS.clients ||
+                key === STORAGE_KEYS.transactions ||
+                key === STORAGE_KEYS.clientNotifications ||
+                key === STORAGE_KEYS.emergencySnapshot ||
+                key === STORAGE_KEYS.emergencySnapshotHistory;
+        }
+
+        function shouldPersistLocally(key) {
+            if (!REMOTE_SOURCE_OF_TRUTH) return true;
+            if (isBusinessStorageKey(key)) return false;
+            return true;
+        }
+
+        function safeStorageSetItem(key, value) {
+            if (!shouldPersistLocally(key)) return false;
+            try {
+                localStorage.setItem(key, value);
+                return true;
+            } catch (error) {
+                if (isQuotaExceededError(error)) {
+                    try {
+                        // First cleanup target: snapshot history is the heaviest and optional.
+                        localStorage.removeItem(STORAGE_KEYS.emergencySnapshotHistory);
+                        localStorage.setItem(key, value);
+                        return true;
+                    } catch (_retryError) {
+                        if (!storageQuotaWarningShown) {
+                            storageQuotaWarningShown = true;
+                            showToast('Stockage local plein: sauvegarde locale limitée, API active.', 'warning');
+                        }
+                        return false;
+                    }
+                }
+                return false;
+            }
+        }
+
+        function purgeLegacyBusinessLocalCache() {
+            if (!REMOTE_SOURCE_OF_TRUTH) return;
+            try {
+                localStorage.removeItem(STORAGE_KEYS.clients);
+                localStorage.removeItem(STORAGE_KEYS.transactions);
+                localStorage.removeItem(STORAGE_KEYS.clientNotifications);
+                localStorage.removeItem(STORAGE_KEYS.emergencySnapshot);
+                localStorage.removeItem(STORAGE_KEYS.emergencySnapshotHistory);
+            } catch (_err) {
+                // ignore
+            }
+        }
+
         function createEmergencySnapshot(reason = 'auto') {
             const snapshot = {
-                clients,
-                transactions,
-                clientNotifications,
+                // Keep only recent slices to reduce localStorage pressure.
+                clients: Array.isArray(clients) ? clients.slice(0, 200) : [],
+                transactions: Array.isArray(transactions) ? transactions.slice(-250) : [],
+                clientNotifications: Array.isArray(clientNotifications) ? clientNotifications.slice(0, 120) : [],
                 settings,
                 exchangeRate,
                 reason,
                 createdAt: new Date().toISOString()
             };
 
-            localStorage.setItem(STORAGE_KEYS.emergencySnapshot, JSON.stringify(snapshot));
+            safeStorageSetItem(STORAGE_KEYS.emergencySnapshot, JSON.stringify(snapshot));
 
             const history = safeParseJSON(localStorage.getItem(STORAGE_KEYS.emergencySnapshotHistory), []);
             const validHistory = Array.isArray(history) ? history : [];
             validHistory.unshift(snapshot);
-            localStorage.setItem(STORAGE_KEYS.emergencySnapshotHistory, JSON.stringify(validHistory.slice(0, 12)));
+            safeStorageSetItem(STORAGE_KEYS.emergencySnapshotHistory, JSON.stringify(validHistory.slice(0, 3)));
         }
 
         function restoreFromEmergencySnapshotIfNeeded() {
+            if (REMOTE_SOURCE_OF_TRUTH) return;
             const hasClientsKey = localStorage.getItem(STORAGE_KEYS.clients) !== null;
             const hasTransactionsKey = localStorage.getItem(STORAGE_KEYS.transactions) !== null;
             const snapshot = safeParseJSON(localStorage.getItem(STORAGE_KEYS.emergencySnapshot), null);
@@ -5502,6 +5563,12 @@
         let clientNotifications = readStoredArray(STORAGE_KEYS.clientNotifications);
         let settings = readStoredObject(STORAGE_KEYS.settings, getDefaultSettings());
         let exchangeRate = readStoredNumber(STORAGE_KEYS.exchangeRate, 2700);
+
+        if (REMOTE_SOURCE_OF_TRUTH) {
+            clients = [];
+            transactions = [];
+            clientNotifications = [];
+        }
 
         restoreFromEmergencySnapshotIfNeeded();
         let currentPage = {
@@ -5897,6 +5964,7 @@
             }
 
             requestPersistentStorage();
+            purgeLegacyBusinessLocalCache();
             // Set current date
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -8636,21 +8704,21 @@
         }
 
         function saveClients() {
-            localStorage.setItem(STORAGE_KEYS.clients, JSON.stringify(clients));
+            safeStorageSetItem(STORAGE_KEYS.clients, JSON.stringify(clients));
             createEmergencySnapshot('saveClients');
         }
 
         function saveTransactions() {
-            localStorage.setItem(STORAGE_KEYS.transactions, JSON.stringify(transactions));
+            safeStorageSetItem(STORAGE_KEYS.transactions, JSON.stringify(transactions));
             createEmergencySnapshot('saveTransactions');
         }
 
         function saveAllData() {
-            localStorage.setItem(STORAGE_KEYS.clients, JSON.stringify(clients));
-            localStorage.setItem(STORAGE_KEYS.transactions, JSON.stringify(transactions));
-            localStorage.setItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
-            localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
-            localStorage.setItem(STORAGE_KEYS.exchangeRate, exchangeRate.toString());
+            safeStorageSetItem(STORAGE_KEYS.clients, JSON.stringify(clients));
+            safeStorageSetItem(STORAGE_KEYS.transactions, JSON.stringify(transactions));
+            safeStorageSetItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
+            safeStorageSetItem(STORAGE_KEYS.settings, JSON.stringify(settings));
+            safeStorageSetItem(STORAGE_KEYS.exchangeRate, exchangeRate.toString());
             createEmergencySnapshot('saveAllData');
         }
 
