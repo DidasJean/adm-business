@@ -3491,6 +3491,10 @@
             gap: 6px !important;
         }
 
+        .tab-btn.hidden {
+            display: none !important;
+        }
+
         .tab-btn:hover {
             background: #f8f9ff !important;
         }
@@ -6533,6 +6537,9 @@
 
         // =============== TAB MANAGEMENT ===============
         function switchTab(tabId) {
+            if (currentManagementMode === 'declarant' && tabId !== 'declarant') {
+                tabId = 'declarant';
+            }
             if (tabId === 'reports' && !enforcePermission('admin', 'Accès réservé à l’admin')) return;
 
             document.querySelectorAll('.tab-btn').forEach(btn => {
