@@ -3515,6 +3515,21 @@
             display: none !important;
         }
 
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+        .data-table th, .data-table td {
+            border-bottom: 1px solid rgba(140, 160, 190, 0.25);
+            padding: 10px 8px;
+            text-align: left;
+            white-space: nowrap;
+        }
+        .data-table th {
+            font-weight: 700;
+        }
+
         .tab-count {
             position: absolute !important;
             top: 4px !important;
@@ -3540,6 +3555,11 @@
             <div class="login-chip"><i class="fas fa-shield-alt"></i> Connexion mobile sécurisée</div>
             <select id="login-role" class="login-input">
                 <option value="admin">Admin</option>
+            </select>
+            <select id="login-management" class="login-input">
+                <option value="client">Gestion client</option>
+                <option value="declarant">Gestion déclarant</option>
+                <option value="chauffeur">Gestion chauffeur</option>
             </select>
             <input type="password" id="password-input" class="login-input" placeholder="Mot de passe" autofocus>
             <button class="login-btn" id="login-btn">
@@ -3617,6 +3637,9 @@
                 <button class="tab-btn" data-tab="clients">
                     <i class="fas fa-users"></i> Clients
                     <span class="tab-count" id="nav-count-clients">0</span>
+                </button>
+                <button class="tab-btn hidden" data-tab="declarant" id="declarant-tab-btn">
+                    <i class="fas fa-file-signature"></i> Déclarant
                 </button>
                 <button class="tab-btn" data-tab="transactions">
                     <i class="fas fa-exchange-alt"></i> Transactions
@@ -3871,6 +3894,99 @@
                                 </div>
                             </div>
                             <div class="mt-20 text-center" id="clients-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Declarant Tab -->
+            <div class="tab-content" id="declarant-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-file-signature"></i>
+                        <div>
+                            <div class="card-title">Gestion Déclarant</div>
+                            <div class="card-subtitle">Avance, Entrée, Sorties et calcul automatique</div>
+                        </div>
+                    </div>
+                    <div class="stats-grid" style="margin-bottom:16px;">
+                        <div class="stat-card"><div class="stat-label">Total Montant Avance</div><div class="stat-value" id="decl-total-avance">0 FC</div></div>
+                        <div class="stat-card"><div class="stat-label">Total Déclaration</div><div class="stat-value" id="decl-total-declaration">0 FC</div></div>
+                        <div class="stat-card"><div class="stat-label">Total Pièces Entrées</div><div class="stat-value" id="decl-total-piece-entree">0</div></div>
+                        <div class="stat-card"><div class="stat-label">Total Pièces Sorties</div><div class="stat-value" id="decl-total-piece-sortie">0</div></div>
+                        <div class="stat-card"><div class="stat-label">Reste Pièces</div><div class="stat-value" id="decl-reste-piece">0</div></div>
+                    </div>
+
+                    <div class="app-layout">
+                        <div class="left-column">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <div>
+                                        <div class="card-title">Avance</div>
+                                        <div class="card-subtitle">Date, motif, montant</div>
+                                    </div>
+                                </div>
+                                <form id="declarant-avance-form">
+                                    <div class="form-group"><label class="form-label">Date</label><input type="date" id="decl-avance-date" class="form-control" required></div>
+                                    <div class="form-group"><label class="form-label">Motif</label><input type="text" id="decl-avance-motif" class="form-control" placeholder="Motif" required></div>
+                                    <div class="form-group"><label class="form-label">Montant (FC)</label><input type="text" id="decl-avance-montant" class="form-control" inputmode="numeric" placeholder="0" required></div>
+                                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Ajouter Avance</button>
+                                </form>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <div>
+                                        <div class="card-title">Entrée</div>
+                                        <div class="card-subtitle">Date, pièce, déclaration</div>
+                                    </div>
+                                </div>
+                                <form id="declarant-entree-form">
+                                    <div class="form-group"><label class="form-label">Date</label><input type="date" id="decl-entree-date" class="form-control" required></div>
+                                    <div class="form-group"><label class="form-label">Pièce</label><input type="text" id="decl-entree-piece" class="form-control" inputmode="numeric" placeholder="0" required></div>
+                                    <div class="form-group"><label class="form-label">Déclaration (FC)</label><input type="text" id="decl-entree-declaration" class="form-control" inputmode="numeric" placeholder="0" required></div>
+                                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Ajouter Entrée</button>
+                                </form>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <div>
+                                        <div class="card-title">Sorties</div>
+                                        <div class="card-subtitle">Date, pièce, chauffeur</div>
+                                    </div>
+                                </div>
+                                <form id="declarant-sortie-form">
+                                    <div class="form-group"><label class="form-label">Date</label><input type="date" id="decl-sortie-date" class="form-control" required></div>
+                                    <div class="form-group"><label class="form-label">Pièce</label><input type="text" id="decl-sortie-piece" class="form-control" inputmode="numeric" placeholder="0" required></div>
+                                    <div class="form-group"><label class="form-label">Chauffeur</label><input type="text" id="decl-sortie-chauffeur" class="form-control" placeholder="Nom du chauffeur" required></div>
+                                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Ajouter Sortie</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="right-column">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-table"></i>
+                                    <div>
+                                        <div class="card-title">Registre Déclarant</div>
+                                        <div class="card-subtitle">Historique des trois colonnes</div>
+                                    </div>
+                                </div>
+                                <div style="overflow:auto;">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th><th>Date</th><th>Motif / Chauffeur</th><th>Pièce</th><th>Montant Déclaration</th><th>Montant Avance</th><th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="declarant-rows"></tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -4378,6 +4494,7 @@
         const AUTH_USER_KEY = 'adm_auth_user';
         const AUTH_API_TOKEN_KEY = 'adm_api_token';
         const API_BASE_KEY = 'adm_api_base';
+        const MANAGEMENT_MODE_KEY = 'adm_management_mode';
         const API_ONLY_MODE = true;
         const ROLE_LABELS = {
             admin: 'Admin',
@@ -4387,6 +4504,9 @@
             clients: 'adm_pro_clients',
             transactions: 'adm_pro_transactions',
             clientNotifications: 'adm_client_notifications',
+            declarantAdvances: 'adm_decl_advances',
+            declarantEntries: 'adm_decl_entries',
+            declarantExits: 'adm_decl_exits',
             settings: 'adm_pro_settings',
             exchangeRate: 'adm_exchange_rate',
             emergencySnapshot: 'adm_emergency_snapshot',
@@ -4408,6 +4528,12 @@
         let notificationMenuOpen = false;
         let revealObserver = null;
         let storageQuotaWarningShown = false;
+        let currentManagementMode = localStorage.getItem(MANAGEMENT_MODE_KEY) || 'client';
+        const MANAGEMENT_LABELS = {
+            client: { singular: 'Client', plural: 'Clients', lowerSingular: 'client', lowerPlural: 'clients' },
+            declarant: { singular: 'Déclarant', plural: 'Déclarants', lowerSingular: 'déclarant', lowerPlural: 'déclarants' },
+            chauffeur: { singular: 'Chauffeur', plural: 'Chauffeurs', lowerSingular: 'chauffeur', lowerPlural: 'chauffeurs' }
+        };
         try {
             const apiParam = new URLSearchParams(window.location.search).get('api');
             if (apiParam && /^https?:\/\//i.test(apiParam)) {
@@ -4466,6 +4592,76 @@
         function getAuthUserFromSession() {
             const parsed = safeParseJSON(sessionStorage.getItem(AUTH_USER_KEY), null);
             return parsed && parsed.id ? parsed : null;
+        }
+
+        function getManagementLabels() {
+            return MANAGEMENT_LABELS[currentManagementMode] || MANAGEMENT_LABELS.client;
+        }
+
+        function setManagementMode(mode) {
+            currentManagementMode = MANAGEMENT_LABELS[mode] ? mode : 'client';
+            localStorage.setItem(MANAGEMENT_MODE_KEY, currentManagementMode);
+            applyManagementContext();
+        }
+
+        function applyManagementContext() {
+            const labels = getManagementLabels();
+            const isDeclarantMode = currentManagementMode === 'declarant';
+            const isClientMode = currentManagementMode === 'client';
+            const clientsTabBtn = document.querySelector('.tab-btn[data-tab="clients"]');
+            const transactionsTabBtn = document.querySelector('.tab-btn[data-tab="transactions"]');
+            const reportsTabBtn = document.querySelector('.tab-btn[data-tab="reports"]');
+            const declarantTabBtn = document.getElementById('declarant-tab-btn');
+            const clientsTab = document.getElementById('clients-tab');
+            const transactionsTab = document.getElementById('transactions-tab');
+            const reportsTab = document.getElementById('reports-tab');
+            const declarantTab = document.getElementById('declarant-tab');
+            if (clientsTabBtn) {
+                clientsTabBtn.innerHTML = `<i class="fas fa-users"></i> ${labels.plural}<span class="tab-count" id="nav-count-clients">0</span>`;
+                clientsTabBtn.classList.toggle('hidden', isDeclarantMode);
+            }
+            if (transactionsTabBtn) transactionsTabBtn.classList.toggle('hidden', isDeclarantMode);
+            if (reportsTabBtn) reportsTabBtn.classList.toggle('hidden', isDeclarantMode);
+            if (declarantTabBtn) declarantTabBtn.classList.toggle('hidden', !isDeclarantMode);
+            if (clientsTab) clientsTab.classList.toggle('hidden', isDeclarantMode);
+            if (transactionsTab) transactionsTab.classList.toggle('hidden', isDeclarantMode);
+            if (reportsTab) reportsTab.classList.toggle('hidden', isDeclarantMode);
+            if (declarantTab) declarantTab.classList.toggle('hidden', !isDeclarantMode);
+            const quickAddBtn = document.getElementById('quick-add-client');
+            if (quickAddBtn) {
+                quickAddBtn.innerHTML = `<i class="fas fa-user-plus"></i> Nouveau ${labels.singular}`;
+                quickAddBtn.classList.toggle('hidden', !isClientMode);
+            }
+            const formTitle = document.getElementById('client-form-title');
+            const formSubtitle = document.getElementById('client-form-subtitle');
+            const clientId = document.getElementById('client-id');
+            if (formTitle && formSubtitle && clientId && !clientId.value) {
+                formTitle.textContent = `Nouveau ${labels.singular}`;
+                formSubtitle.textContent = `Ajouter un ${labels.lowerSingular} à la base`;
+            }
+            const clientNameInput = document.getElementById('client-name');
+            if (clientNameInput) {
+                clientNameInput.placeholder = labels.singular === 'Client' ? 'Nom et prénom' : `Nom du ${labels.lowerSingular}`;
+            }
+            const clientSearch = document.getElementById('client-search');
+            if (clientSearch) {
+                clientSearch.placeholder = `Rechercher par nom du ${labels.lowerSingular}, téléphone...`;
+            }
+            const listCardTitle = document.querySelector('#clients-tab .card .card-title');
+            if (listCardTitle && /Nouveau/i.test(listCardTitle.textContent || '')) {
+                listCardTitle.textContent = `Nouveau ${labels.singular}`;
+            }
+            const listTitle = document.querySelector('#clients-tab .clients-container')?.closest('.card')?.querySelector('.card-title');
+            const listSub = document.querySelector('#clients-tab .clients-container')?.closest('.card')?.querySelector('.card-subtitle');
+            if (listTitle) listTitle.textContent = `Liste des ${labels.plural}`;
+            if (listSub) listSub.textContent = `Gestion complète des ${labels.lowerPlural}`;
+            const transactionClientLabel = document.querySelector('label[for="transaction-client"], #transaction-client')?.closest('.form-group')?.querySelector('.form-label');
+            if (transactionClientLabel) {
+                transactionClientLabel.textContent = labels.singular;
+            }
+            if (isDeclarantMode) {
+                switchTab('declarant');
+            }
         }
 
         function isRoleAllowed(requiredRole) {
@@ -5318,7 +5514,12 @@
             if (!document.getElementById('login-role').value) {
                 document.getElementById('login-role').value = 'admin';
             }
+            const loginManagementEl = document.getElementById('login-management');
+            if (loginManagementEl) {
+                loginManagementEl.value = MANAGEMENT_LABELS[currentManagementMode] ? currentManagementMode : 'client';
+            }
             updateLoginRoleUI();
+            applyManagementContext();
 
             users = ensureUsersData();
             const sessionUser = getAuthUserFromSession();
@@ -5339,8 +5540,10 @@
         // Login handler
         document.getElementById('login-btn').addEventListener('click', async function() {
             const selectedRole = 'admin';
+            const selectedManagement = document.getElementById('login-management')?.value || 'client';
             const password = document.getElementById('password-input').value;
             const errorElement = document.getElementById('login-error');
+            setManagementMode(selectedManagement);
 
             if (isApiEnabled()) {
                 try {
@@ -5385,6 +5588,9 @@
         });
 
         document.getElementById('login-role').addEventListener('change', updateLoginRoleUI);
+        document.getElementById('login-management').addEventListener('change', function() {
+            setManagementMode(this.value || 'client');
+        });
         document.getElementById('password-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 document.getElementById('login-btn').click();
@@ -5402,6 +5608,8 @@
             updateSidebarProfile();
             setAppVisibility(false);
             document.getElementById('login-role').value = 'admin';
+            const loginManagementEl = document.getElementById('login-management');
+            if (loginManagementEl) loginManagementEl.value = currentManagementMode;
             document.getElementById('password-input').value = '';
             updateLoginRoleUI();
             document.getElementById('password-input').focus();
@@ -5496,6 +5704,9 @@
                 clients: Array.isArray(clients) ? clients.slice(0, 200) : [],
                 transactions: Array.isArray(transactions) ? transactions.slice(-250) : [],
                 clientNotifications: Array.isArray(clientNotifications) ? clientNotifications.slice(0, 120) : [],
+                declarantAdvances: Array.isArray(declarantAdvances) ? declarantAdvances.slice(-300) : [],
+                declarantEntries: Array.isArray(declarantEntries) ? declarantEntries.slice(-300) : [],
+                declarantExits: Array.isArray(declarantExits) ? declarantExits.slice(-300) : [],
                 settings,
                 exchangeRate,
                 reason,
@@ -5544,6 +5755,18 @@
                 clientNotifications = snapshot.clientNotifications;
                 localStorage.setItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
             }
+            if (Array.isArray(snapshot.declarantAdvances)) {
+                declarantAdvances = snapshot.declarantAdvances;
+                localStorage.setItem(STORAGE_KEYS.declarantAdvances, JSON.stringify(declarantAdvances));
+            }
+            if (Array.isArray(snapshot.declarantEntries)) {
+                declarantEntries = snapshot.declarantEntries;
+                localStorage.setItem(STORAGE_KEYS.declarantEntries, JSON.stringify(declarantEntries));
+            }
+            if (Array.isArray(snapshot.declarantExits)) {
+                declarantExits = snapshot.declarantExits;
+                localStorage.setItem(STORAGE_KEYS.declarantExits, JSON.stringify(declarantExits));
+            }
 
             if (Number.isFinite(Number(snapshot.exchangeRate))) {
                 exchangeRate = Number(snapshot.exchangeRate);
@@ -5566,6 +5789,9 @@
         let clients = readStoredArray(STORAGE_KEYS.clients);
         let transactions = readStoredArray(STORAGE_KEYS.transactions);
         let clientNotifications = readStoredArray(STORAGE_KEYS.clientNotifications);
+        let declarantAdvances = readStoredArray(STORAGE_KEYS.declarantAdvances);
+        let declarantEntries = readStoredArray(STORAGE_KEYS.declarantEntries);
+        let declarantExits = readStoredArray(STORAGE_KEYS.declarantExits);
         let settings = readStoredObject(STORAGE_KEYS.settings, getDefaultSettings());
         let exchangeRate = readStoredNumber(STORAGE_KEYS.exchangeRate, 2700);
 
@@ -5978,6 +6204,13 @@
             
             // Set rate date to today
             document.getElementById('rate-date').value = now.toISOString().split('T')[0];
+            const todayStr = now.toISOString().split('T')[0];
+            const declAvanceDate = document.getElementById('decl-avance-date');
+            const declEntreeDate = document.getElementById('decl-entree-date');
+            const declSortieDate = document.getElementById('decl-sortie-date');
+            if (declAvanceDate && !declAvanceDate.value) declAvanceDate.value = todayStr;
+            if (declEntreeDate && !declEntreeDate.value) declEntreeDate.value = todayStr;
+            if (declSortieDate && !declSortieDate.value) declSortieDate.value = todayStr;
             
             // Initialize transaction date to now
             document.getElementById('transaction-date').value = now.toISOString().slice(0, 16);
@@ -6005,6 +6238,7 @@
             loadUserLinkedClientOptions();
             loadReportClientSelects();
             loadUserLinkedClientOptions();
+            loadDeclarantData();
             applyRoleAccess();
             updateSidebarProfile();
             renderUsersList();
@@ -6063,6 +6297,9 @@
             on('client-remove-avatar-btn', 'click', removeClientAvatar);
             on('client-search', 'input', filterClients);
             on('client-filter-status', 'change', filterClients);
+            on('declarant-avance-form', 'submit', handleDeclarantAvanceSubmit);
+            on('declarant-entree-form', 'submit', handleDeclarantEntreeSubmit);
+            on('declarant-sortie-form', 'submit', handleDeclarantSortieSubmit);
 
             // Transaction form
             on('transaction-form', 'submit', handleTransactionSubmit);
@@ -6079,6 +6316,10 @@
             attachFCInputFormatter('client-credit-limit', 0);
             attachFCInputFormatter('exchange-rate', 0);
             attachFCInputFormatter('setting-default-rate', 0);
+            attachFCInputFormatter('decl-avance-montant', 0);
+            attachFCInputFormatter('decl-entree-declaration', 0);
+            attachFCInputFormatter('decl-entree-piece', 0);
+            attachFCInputFormatter('decl-sortie-piece', 0);
             
             // Currency conversion - FC instead of FCFA
             on('debt-amount-fc', 'input', function() {
@@ -6271,6 +6512,8 @@
                 loadReportClientSelects();
             } else if (tabId === 'dashboard') {
                 loadChatThread();
+            } else if (tabId === 'declarant') {
+                loadDeclarantData();
             }
             if (selectedTabContent) {
                 applyRevealAnimations(selectedTabContent);
@@ -6665,7 +6908,8 @@
 
         async function handleClientSubmit(e) {
             e.preventDefault();
-            if (!enforcePermission('admin', 'Gestion clients réservée à l’admin')) return;
+            const labels = getManagementLabels();
+            if (!enforcePermission('admin', `Gestion ${labels.lowerPlural} réservée à l’admin`)) return;
             
             const clientId = document.getElementById('client-id').value;
             const name = document.getElementById('client-name').value.trim();
@@ -6676,7 +6920,7 @@
             const clientAvatarData = document.getElementById('client-avatar-data').value || '';
 
             if (!name) {
-                showToast('Le nom du client est obligatoire', 'error');
+                showToast(`Le nom du ${labels.lowerSingular} est obligatoire`, 'error');
                 return;
             }
 
@@ -6696,13 +6940,13 @@
                             method: 'PUT',
                             body: JSON.stringify(payloadApi)
                         });
-                        showToast('Client modifié avec succès', 'success');
+                        showToast(`${labels.singular} modifié avec succès`, 'success');
                     } else {
                         await apiRequest('/api/clients', {
                             method: 'POST',
                             body: JSON.stringify(payloadApi)
                         });
-                        showToast('Client ajouté avec succès', 'success');
+                        showToast(`${labels.singular} ajouté avec succès`, 'success');
                     }
 
                     await hydrateFromApi();
@@ -6715,13 +6959,13 @@
                     resetClientForm();
                     return;
                 } catch (error) {
-                    showToast(`Erreur API client: ${error.message}`, 'error');
+                    showToast(`Erreur API ${labels.lowerSingular}: ${error.message}`, 'error');
                     return;
                 }
             }
 
             if (clientId) {
-                if (!enforcePermission('admin', 'Modification client réservée à l’admin')) return;
+                if (!enforcePermission('admin', `Modification ${labels.lowerSingular} réservée à l’admin`)) return;
                 const index = clients.findIndex(c => c.id === clientId);
                 if (index !== -1) {
                     clients[index] = {
@@ -6734,7 +6978,7 @@
                         avatar: clientAvatarData,
                         updatedAt: new Date().toISOString()
                     };
-                    showToast('Client modifié avec succès', 'success');
+                    showToast(`${labels.singular} modifié avec succès`, 'success');
                 }
             } else {
                 const newClient = {
@@ -6750,7 +6994,7 @@
                     active: true
                 };
                 clients.push(newClient);
-                showToast('Client ajouté avec succès', 'success');
+                showToast(`${labels.singular} ajouté avec succès`, 'success');
             }
 
             saveClients();
@@ -6764,7 +7008,8 @@
         }
 
         window.editClient = function(id) {
-            if (!enforcePermission('admin', 'Modification client réservée à l’admin')) return;
+            const labels = getManagementLabels();
+            if (!enforcePermission('admin', `Modification ${labels.lowerSingular} réservée à l’admin`)) return;
             const client = clients.find(c => c.id === id);
             if (!client) return;
 
@@ -6778,8 +7023,8 @@
             const avatarInput = document.getElementById('client-avatar-input');
             if (avatarInput) avatarInput.value = '';
 
-            document.getElementById('client-form-title').textContent = 'Modifier Client';
-            document.getElementById('client-form-subtitle').textContent = 'Modifier les informations du client';
+            document.getElementById('client-form-title').textContent = `Modifier ${labels.singular}`;
+            document.getElementById('client-form-subtitle').textContent = `Modifier les informations du ${labels.lowerSingular}`;
             document.getElementById('client-submit-btn').innerHTML = '<i class="fas fa-save"></i> Mettre à jour';
 
             switchTab('clients');
@@ -6894,8 +7139,9 @@
         };
 
         window.deleteClient = async function(id) {
-            if (!enforcePermission('admin', 'Suppression client réservée à l’admin')) return;
-            if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ? Toutes ses transactions seront également supprimées.')) {
+            const labels = getManagementLabels();
+            if (!enforcePermission('admin', `Suppression ${labels.lowerSingular} réservée à l’admin`)) return;
+            if (!confirm(`Êtes-vous sûr de vouloir supprimer ce ${labels.lowerSingular} ? Toutes ses transactions seront également supprimées.`)) {
                 return;
             }
 
@@ -6909,10 +7155,10 @@
                     loadReportClientSelects();
                     updateDashboard();
                     updateDataStats();
-                    showToast('Client supprimé avec succès', 'success');
+                    showToast(`${labels.singular} supprimé avec succès`, 'success');
                     return;
                 } catch (error) {
-                    showToast(`Erreur API suppression client: ${error.message}`, 'error');
+                    showToast(`Erreur API suppression ${labels.lowerSingular}: ${error.message}`, 'error');
                     return;
                 }
             }
@@ -6930,7 +7176,7 @@
             loadReportClientSelects();
             updateDashboard();
             updateDataStats();
-            showToast('Client supprimé avec succès', 'success');
+            showToast(`${labels.singular} supprimé avec succès`, 'success');
         };
 
         function filterClients() {
@@ -6959,10 +7205,11 @@
             clientsList.innerHTML = '';
 
             if (filteredClients.length === 0) {
+                const labels = getManagementLabels();
                 clientsList.innerHTML = `
                     <div class="text-center" style="padding: 30px 0; color: #999;">
                         <i class="fas fa-search fa-3x mb-20"></i>
-                        <p>Aucun client trouvé</p>
+                        <p>Aucun ${labels.lowerSingular} trouvé</p>
                     </div>
                 `;
                 applyRevealAnimations(document.getElementById('clients-tab'));
@@ -7020,15 +7267,138 @@
         }
 
         function resetClientForm() {
+            const labels = getManagementLabels();
             document.getElementById('client-form').reset();
             document.getElementById('client-id').value = '';
             const avatarInput = document.getElementById('client-avatar-input');
             if (avatarInput) avatarInput.value = '';
             refreshClientAvatarPreview('');
-            document.getElementById('client-form-title').textContent = 'Nouveau Client';
-            document.getElementById('client-form-subtitle').textContent = 'Ajouter un client à la base';
+            document.getElementById('client-form-title').textContent = `Nouveau ${labels.singular}`;
+            document.getElementById('client-form-subtitle').textContent = `Ajouter un ${labels.lowerSingular} à la base`;
             document.getElementById('client-submit-btn').innerHTML = '<i class="fas fa-save"></i> Enregistrer';
         }
+
+        function saveDeclarantData() {
+            safeStorageSetItem(STORAGE_KEYS.declarantAdvances, JSON.stringify(declarantAdvances));
+            safeStorageSetItem(STORAGE_KEYS.declarantEntries, JSON.stringify(declarantEntries));
+            safeStorageSetItem(STORAGE_KEYS.declarantExits, JSON.stringify(declarantExits));
+            createEmergencySnapshot('saveDeclarantData');
+        }
+
+        function computeDeclarantTotals() {
+            const totalAvance = declarantAdvances.reduce((s, r) => s + (Number(r.amount) || 0), 0);
+            const totalDeclaration = declarantEntries.reduce((s, r) => s + (Number(r.declaration) || 0), 0);
+            const totalPieceEntree = declarantEntries.reduce((s, r) => s + (Number(r.piece) || 0), 0);
+            const totalPieceSortie = declarantExits.reduce((s, r) => s + (Number(r.piece) || 0), 0);
+            return {
+                totalAvance,
+                totalDeclaration,
+                totalPieceEntree,
+                totalPieceSortie,
+                restePiece: totalPieceEntree - totalPieceSortie
+            };
+        }
+
+        function renderDeclarantRows() {
+            const tbody = document.getElementById('declarant-rows');
+            if (!tbody) return;
+            const rows = [];
+            declarantAdvances.forEach(item => rows.push({ type: 'Avance', date: item.date, label: item.motif, piece: '', declaration: '', avance: item.amount, id: item.id }));
+            declarantEntries.forEach(item => rows.push({ type: 'Entrée', date: item.date, label: '-', piece: item.piece, declaration: item.declaration, avance: '', id: item.id }));
+            declarantExits.forEach(item => rows.push({ type: 'Sorties', date: item.date, label: item.chauffeur, piece: item.piece, declaration: '', avance: '', id: item.id }));
+            rows.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (!rows.length) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;">Aucune donnée déclarant</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = rows.map(row => `
+                <tr>
+                    <td>${escapeHTML(row.type)}</td>
+                    <td>${escapeHTML(row.date || '')}</td>
+                    <td>${escapeHTML(row.label || '-')}</td>
+                    <td>${row.piece !== '' ? escapeHTML(String(row.piece)) : '-'}</td>
+                    <td>${row.declaration !== '' ? formatCurrency(row.declaration) : '-'}</td>
+                    <td>${row.avance !== '' ? formatCurrency(row.avance) : '-'}</td>
+                    <td><button type="button" class="client-action-btn" onclick="deleteDeclarantRow('${escapeHTML(row.type)}','${escapeHTML(row.id)}')">Supprimer</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderDeclarantSummary() {
+            const t = computeDeclarantTotals();
+            const totalAvanceEl = document.getElementById('decl-total-avance');
+            const totalDeclEl = document.getElementById('decl-total-declaration');
+            const totalEntreeEl = document.getElementById('decl-total-piece-entree');
+            const totalSortieEl = document.getElementById('decl-total-piece-sortie');
+            const resteEl = document.getElementById('decl-reste-piece');
+            if (totalAvanceEl) totalAvanceEl.textContent = formatCurrency(t.totalAvance);
+            if (totalDeclEl) totalDeclEl.textContent = formatCurrency(t.totalDeclaration);
+            if (totalEntreeEl) totalEntreeEl.textContent = formatFCNumber(t.totalPieceEntree, 0);
+            if (totalSortieEl) totalSortieEl.textContent = formatFCNumber(t.totalPieceSortie, 0);
+            if (resteEl) resteEl.textContent = formatFCNumber(t.restePiece, 0);
+        }
+
+        function loadDeclarantData() {
+            renderDeclarantSummary();
+            renderDeclarantRows();
+        }
+
+        function handleDeclarantAvanceSubmit(e) {
+            e.preventDefault();
+            const date = document.getElementById('decl-avance-date').value;
+            const motif = (document.getElementById('decl-avance-motif').value || '').trim();
+            const amount = parseLooseNumber(document.getElementById('decl-avance-montant').value);
+            if (!date || !motif || amount <= 0) {
+                showToast('Complétez correctement l’avance', 'error');
+                return;
+            }
+            declarantAdvances.push({ id: `da_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, date, motif, amount, createdAt: new Date().toISOString() });
+            saveDeclarantData();
+            loadDeclarantData();
+            document.getElementById('declarant-avance-form').reset();
+        }
+
+        function handleDeclarantEntreeSubmit(e) {
+            e.preventDefault();
+            const date = document.getElementById('decl-entree-date').value;
+            const piece = parseLooseNumber(document.getElementById('decl-entree-piece').value);
+            const declaration = parseLooseNumber(document.getElementById('decl-entree-declaration').value);
+            if (!date || piece <= 0 || declaration < 0) {
+                showToast('Complétez correctement l’entrée', 'error');
+                return;
+            }
+            declarantEntries.push({ id: `de_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, date, piece, declaration, createdAt: new Date().toISOString() });
+            saveDeclarantData();
+            loadDeclarantData();
+            document.getElementById('declarant-entree-form').reset();
+        }
+
+        function handleDeclarantSortieSubmit(e) {
+            e.preventDefault();
+            const date = document.getElementById('decl-sortie-date').value;
+            const piece = parseLooseNumber(document.getElementById('decl-sortie-piece').value);
+            const chauffeur = (document.getElementById('decl-sortie-chauffeur').value || '').trim();
+            if (!date || piece <= 0 || !chauffeur) {
+                showToast('Complétez correctement la sortie', 'error');
+                return;
+            }
+            declarantExits.push({ id: `ds_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, date, piece, chauffeur, createdAt: new Date().toISOString() });
+            saveDeclarantData();
+            loadDeclarantData();
+            document.getElementById('declarant-sortie-form').reset();
+        }
+
+        window.deleteDeclarantRow = function(type, id) {
+            if (!id) return;
+            if (type === 'Avance') declarantAdvances = declarantAdvances.filter(r => r.id !== id);
+            if (type === 'Entrée') declarantEntries = declarantEntries.filter(r => r.id !== id);
+            if (type === 'Sorties') declarantExits = declarantExits.filter(r => r.id !== id);
+            saveDeclarantData();
+            loadDeclarantData();
+            showToast('Ligne supprimée', 'success');
+        };
 
         // =============== TRANSACTION MANAGEMENT ===============
         function loadTransactionsList() {
@@ -8175,6 +8545,9 @@
                 clients: clients,
                 transactions: transactions,
                 clientNotifications: clientNotifications,
+                declarantAdvances: declarantAdvances,
+                declarantEntries: declarantEntries,
+                declarantExits: declarantExits,
                 settings: settings,
                 exchangeRate: exchangeRate,
                 backupDate: new Date().toISOString()
@@ -8210,6 +8583,9 @@
                 if (backup.clients) clients = backup.clients;
                 if (backup.transactions) transactions = backup.transactions;
                 if (Array.isArray(backup.clientNotifications)) clientNotifications = backup.clientNotifications;
+                if (Array.isArray(backup.declarantAdvances)) declarantAdvances = backup.declarantAdvances;
+                if (Array.isArray(backup.declarantEntries)) declarantEntries = backup.declarantEntries;
+                if (Array.isArray(backup.declarantExits)) declarantExits = backup.declarantExits;
                 if (backup.settings) settings = backup.settings;
                 if (backup.exchangeRate) exchangeRate = backup.exchangeRate;
                 if (Array.isArray(backup.users) && backup.users.length > 0) {
@@ -8226,6 +8602,7 @@
                 updateDashboard();
                 updateDataStats();
                 updateExchangeRateDisplay();
+                loadDeclarantData();
                 applyRoleAccess();
                 showToast('Données restaurées avec succès!', 'success');
                 closeModal();
@@ -8260,12 +8637,18 @@
             clients = [];
             transactions = [];
             clientNotifications = [];
+            declarantAdvances = [];
+            declarantEntries = [];
+            declarantExits = [];
             settings = getDefaultSettings();
             exchangeRate = 2700;
             
             localStorage.removeItem('adm_pro_clients');
             localStorage.removeItem('adm_pro_transactions');
             localStorage.removeItem(STORAGE_KEYS.clientNotifications);
+            localStorage.removeItem(STORAGE_KEYS.declarantAdvances);
+            localStorage.removeItem(STORAGE_KEYS.declarantEntries);
+            localStorage.removeItem(STORAGE_KEYS.declarantExits);
             localStorage.removeItem('adm_pro_settings');
             localStorage.removeItem('adm_exchange_rate');
             localStorage.removeItem(ADMIN_PASSWORD_KEY);
@@ -8281,6 +8664,7 @@
             loadTransactionsList();
             updateDashboard();
             updateDataStats();
+            loadDeclarantData();
             loadSettings();
             startAutoSave();
             updateExchangeRateDisplay();
@@ -8659,6 +9043,9 @@
             safeStorageSetItem(STORAGE_KEYS.clients, JSON.stringify(clients));
             safeStorageSetItem(STORAGE_KEYS.transactions, JSON.stringify(transactions));
             safeStorageSetItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
+            safeStorageSetItem(STORAGE_KEYS.declarantAdvances, JSON.stringify(declarantAdvances));
+            safeStorageSetItem(STORAGE_KEYS.declarantEntries, JSON.stringify(declarantEntries));
+            safeStorageSetItem(STORAGE_KEYS.declarantExits, JSON.stringify(declarantExits));
             safeStorageSetItem(STORAGE_KEYS.settings, JSON.stringify(settings));
             safeStorageSetItem(STORAGE_KEYS.exchangeRate, exchangeRate.toString());
             createEmergencySnapshot('saveAllData');
