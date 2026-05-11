@@ -4644,15 +4644,20 @@
             const settingsTab = document.getElementById('settings-tab');
             const declarantTab = document.getElementById('declarant-tab');
             const notificationCenter = document.getElementById('notification-center');
-            if (dashboardTabBtn) dashboardTabBtn.classList.toggle('hidden', isDeclarantMode);
+            const forceMenuVisibility = (el, visible) => {
+                if (!el) return;
+                el.classList.toggle('hidden', !visible);
+                el.style.display = visible ? '' : 'none';
+            };
+            forceMenuVisibility(dashboardTabBtn, !isDeclarantMode);
             if (clientsTabBtn) {
                 clientsTabBtn.innerHTML = `<i class="fas fa-users"></i> ${labels.plural}<span class="tab-count" id="nav-count-clients">0</span>`;
-                clientsTabBtn.classList.toggle('hidden', isDeclarantMode);
+                forceMenuVisibility(clientsTabBtn, !isDeclarantMode);
             }
-            if (transactionsTabBtn) transactionsTabBtn.classList.toggle('hidden', isDeclarantMode);
-            if (reportsTabBtn) reportsTabBtn.classList.toggle('hidden', isDeclarantMode);
-            if (settingsTabBtn) settingsTabBtn.classList.toggle('hidden', isDeclarantMode);
-            if (declarantTabBtn) declarantTabBtn.classList.toggle('hidden', !isDeclarantMode);
+            forceMenuVisibility(transactionsTabBtn, !isDeclarantMode);
+            forceMenuVisibility(reportsTabBtn, !isDeclarantMode);
+            forceMenuVisibility(settingsTabBtn, !isDeclarantMode);
+            forceMenuVisibility(declarantTabBtn, isDeclarantMode);
             if (dashboardTab) dashboardTab.classList.toggle('hidden', isDeclarantMode);
             if (clientsTab) clientsTab.classList.toggle('hidden', isDeclarantMode);
             if (transactionsTab) transactionsTab.classList.toggle('hidden', isDeclarantMode);
@@ -4694,6 +4699,9 @@
             }
             if (isDeclarantMode) {
                 switchTab('declarant');
+            } else {
+                const activeDeclarant = declarantTab && declarantTab.classList.contains('active');
+                if (activeDeclarant) switchTab('clients');
             }
         }
 
