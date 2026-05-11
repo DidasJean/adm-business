@@ -4631,25 +4631,35 @@
             const labels = getManagementLabels();
             const isDeclarantMode = currentManagementMode === 'declarant';
             const isClientMode = currentManagementMode === 'client';
+            const dashboardTabBtn = document.querySelector('.tab-btn[data-tab="dashboard"]');
             const clientsTabBtn = document.querySelector('.tab-btn[data-tab="clients"]');
             const transactionsTabBtn = document.querySelector('.tab-btn[data-tab="transactions"]');
             const reportsTabBtn = document.querySelector('.tab-btn[data-tab="reports"]');
+            const settingsTabBtn = document.querySelector('.tab-btn[data-tab="settings"]');
             const declarantTabBtn = document.getElementById('declarant-tab-btn');
+            const dashboardTab = document.getElementById('dashboard-tab');
             const clientsTab = document.getElementById('clients-tab');
             const transactionsTab = document.getElementById('transactions-tab');
             const reportsTab = document.getElementById('reports-tab');
+            const settingsTab = document.getElementById('settings-tab');
             const declarantTab = document.getElementById('declarant-tab');
+            const notificationCenter = document.getElementById('notification-center');
+            if (dashboardTabBtn) dashboardTabBtn.classList.toggle('hidden', isDeclarantMode);
             if (clientsTabBtn) {
                 clientsTabBtn.innerHTML = `<i class="fas fa-users"></i> ${labels.plural}<span class="tab-count" id="nav-count-clients">0</span>`;
                 clientsTabBtn.classList.toggle('hidden', isDeclarantMode);
             }
             if (transactionsTabBtn) transactionsTabBtn.classList.toggle('hidden', isDeclarantMode);
             if (reportsTabBtn) reportsTabBtn.classList.toggle('hidden', isDeclarantMode);
+            if (settingsTabBtn) settingsTabBtn.classList.toggle('hidden', isDeclarantMode);
             if (declarantTabBtn) declarantTabBtn.classList.toggle('hidden', !isDeclarantMode);
+            if (dashboardTab) dashboardTab.classList.toggle('hidden', isDeclarantMode);
             if (clientsTab) clientsTab.classList.toggle('hidden', isDeclarantMode);
             if (transactionsTab) transactionsTab.classList.toggle('hidden', isDeclarantMode);
             if (reportsTab) reportsTab.classList.toggle('hidden', isDeclarantMode);
+            if (settingsTab) settingsTab.classList.toggle('hidden', isDeclarantMode);
             if (declarantTab) declarantTab.classList.toggle('hidden', !isDeclarantMode);
+            if (notificationCenter) notificationCenter.classList.toggle('hidden', isDeclarantMode);
             const quickAddBtn = document.getElementById('quick-add-client');
             if (quickAddBtn) {
                 quickAddBtn.innerHTML = `<i class="fas fa-user-plus"></i> Nouveau ${labels.singular}`;
