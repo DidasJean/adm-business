@@ -4408,7 +4408,7 @@
         let deferredInstallPrompt = null;
         let lastPlayedClientNotificationId = '';
         let apiToken = sessionStorage.getItem(AUTH_API_TOKEN_KEY) || '';
-        let apiBaseUrl = localStorage.getItem(API_BASE_KEY) || 'http://localhost:8080';
+        let apiBaseUrl = localStorage.getItem(API_BASE_KEY) || 'https://adm-business.onrender.com';
         let activeChatClientId = '';
         let activeCommunicationView = 'messages';
         let socketClient = null;
@@ -4420,6 +4420,16 @@
             const apiParam = new URLSearchParams(window.location.search).get('api');
             if (apiParam && /^https?:\/\//i.test(apiParam)) {
                 apiBaseUrl = apiParam;
+                localStorage.setItem(API_BASE_KEY, apiBaseUrl);
+            }
+        } catch (_err) {
+            // ignore
+        }
+        // Safety net: on hosted frontend, never keep localhost API.
+        try {
+            const isHostedFrontend = /onrender\.com$/i.test(window.location.hostname || '');
+            if (isHostedFrontend && /localhost|127\.0\.0\.1/i.test(apiBaseUrl || '')) {
+                apiBaseUrl = 'https://adm-business.onrender.com';
                 localStorage.setItem(API_BASE_KEY, apiBaseUrl);
             }
         } catch (_err) {
