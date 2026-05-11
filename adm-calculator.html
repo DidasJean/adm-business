@@ -3540,7 +3540,6 @@
             <div class="login-chip"><i class="fas fa-shield-alt"></i> Connexion mobile sécurisée</div>
             <select id="login-role" class="login-input">
                 <option value="admin">Admin</option>
-                <option value="client">Client</option>
             </select>
             <input type="password" id="password-input" class="login-input" placeholder="Mot de passe" autofocus>
             <button class="login-btn" id="login-btn">
@@ -3815,13 +3814,6 @@
                                 <div class="form-group">
                                     <label class="form-label">Limite de crédit (FC)</label>
                                     <input type="text" id="client-credit-limit" class="form-control" placeholder="0" inputmode="numeric">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Mot de passe client</label>
-                                    <input type="password" id="client-password" class="form-control" placeholder="Définir le mot de passe du client">
-                                    <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">
-                                        Obligatoire à la création. En modification, laisser vide pour conserver l'actuel.
-                                    </p>
                                 </div>
                                 <div class="action-buttons">
                                     <button type="submit" class="btn btn-success" id="client-submit-btn">
@@ -4491,18 +4483,10 @@
         }
 
         function getScopedClients() {
-            if (currentUser && currentUser.role === 'client') {
-                if (!currentUser.linkedClientId) return [];
-                return clients.filter(c => c.id === currentUser.linkedClientId);
-            }
             return clients;
         }
 
         function getScopedTransactions() {
-            if (currentUser && currentUser.role === 'client') {
-                if (!currentUser.linkedClientId) return [];
-                return transactions.filter(t => t.clientId === currentUser.linkedClientId);
-            }
             return transactions;
         }
 
@@ -5239,7 +5223,11 @@
 
         function authenticateAndOpenApp(user = null) {
             if (user) {
-                const normalizedRole = (user.role === 'gerant' || user.role === 'admin') ? 'admin' : 'client';
+                const normalizedRole = (user.role === 'gerant' || user.role === 'admin') ? 'admin' : '';
+                if (normalizedRole !== 'admin') {
+                    showToast('Accès client désactivé. Utilisez un compte gérant/admin.', 'warning');
+                    return;
+                }
                 currentUser = {
                     id: user.id,
                     username: user.username,
@@ -5268,7 +5256,14 @@
             } else {
                 currentUser = getAuthUserFromSession();
                 if (currentUser) {
-                    currentUser.role = (currentUser.role === 'gerant' || currentUser.role === 'admin') ? 'admin' : 'client';
+                    currentUser.role = (currentUser.role === 'gerant' || currentUser.role === 'admin') ? 'admin' : '';
+                    if (currentUser.role !== 'admin') {
+                        sessionStorage.removeItem('adm_auth');
+                        sessionStorage.removeItem(AUTH_USER_KEY);
+                        currentUser = null;
+                        setAppVisibility(false);
+                        return;
+                    }
                 }
             }
 
@@ -5343,7 +5338,7 @@
 
         // Login handler
         document.getElementById('login-btn').addEventListener('click', async function() {
-            const selectedRole = document.getElementById('login-role').value;
+            const selectedRole = 'admin';
             const password = document.getElementById('password-input').value;
             const errorElement = document.getElementById('login-error');
 
@@ -6678,7 +6673,6 @@
             const email = document.getElementById('client-email').value.trim();
             const address = document.getElementById('client-address').value.trim();
             const creditLimit = parseLooseNumber(document.getElementById('client-credit-limit').value) || 0;
-            const clientPassword = document.getElementById('client-password').value;
             const clientAvatarData = document.getElementById('client-avatar-data').value || '';
 
             if (!name) {
@@ -6694,13 +6688,8 @@
                         email,
                         address,
                         creditLimit,
-                        avatar: clientAvatarData,
-                        clientPassword: clientPassword || undefined
+                        avatar: clientAvatarData
                     };
-                    if (!clientId && (!clientPassword || clientPassword.length < 4)) {
-                        showToast('Veuillez définir un mot de passe client (min. 4 caractères)', 'error');
-                        return;
-                    }
 
                     if (clientId) {
                         await apiRequest(`/api/clients/${clientId}`, {
@@ -6745,51 +6734,9 @@
                         avatar: clientAvatarData,
                         updatedAt: new Date().toISOString()
                     };
-
-                    const existingClientUser = findClientUserByClientId(clientId);
-                    if (clientPassword) {
-                        if (clientPassword.length < 4) {
-                            showToast('Le mot de passe client doit contenir au moins 4 caractères', 'error');
-                            return;
-                        }
-                        if (isClientPasswordTaken(clientPassword, existingClientUser ? existingClientUser.id : '')) {
-                            showToast('Ce mot de passe client est déjà utilisé. Choisissez-en un autre.', 'error');
-                            return;
-                        }
-                        if (existingClientUser) {
-                            existingClientUser.password = clientPassword;
-                            existingClientUser.updatedAt = new Date().toISOString();
-                        } else {
-                            users.push({
-                                id: `user_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-                                displayName: name,
-                                username: `client_${clientId.slice(-6)}`,
-                                role: 'client',
-                                linkedClientId: clientId,
-                                password: clientPassword,
-                                active: true,
-                                createdAt: new Date().toISOString(),
-                                updatedAt: new Date().toISOString()
-                            });
-                        }
-                        saveUsers();
-                    } else if (existingClientUser) {
-                        existingClientUser.displayName = name;
-                        existingClientUser.updatedAt = new Date().toISOString();
-                        saveUsers();
-                    }
                     showToast('Client modifié avec succès', 'success');
                 }
             } else {
-                if (!clientPassword || clientPassword.length < 4) {
-                    showToast('Veuillez définir un mot de passe client (min. 4 caractères)', 'error');
-                    return;
-                }
-                if (isClientPasswordTaken(clientPassword)) {
-                    showToast('Ce mot de passe client est déjà utilisé. Choisissez-en un autre.', 'error');
-                    return;
-                }
-
                 const newClient = {
                     id: 'client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
                     name,
@@ -6803,19 +6750,6 @@
                     active: true
                 };
                 clients.push(newClient);
-
-                users.push({
-                    id: `user_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-                    displayName: name,
-                    username: `client_${newClient.id.slice(-6)}`,
-                    role: 'client',
-                    linkedClientId: newClient.id,
-                    password: clientPassword,
-                    active: true,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                });
-                saveUsers();
                 showToast('Client ajouté avec succès', 'success');
             }
 
@@ -6840,13 +6774,12 @@
             document.getElementById('client-email').value = client.email || '';
             document.getElementById('client-address').value = client.address || '';
             setFormattedFCFieldValue('client-credit-limit', client.creditLimit || '');
-            document.getElementById('client-password').value = '';
             refreshClientAvatarPreview(client.avatar || '');
             const avatarInput = document.getElementById('client-avatar-input');
             if (avatarInput) avatarInput.value = '';
 
             document.getElementById('client-form-title').textContent = 'Modifier Client';
-            document.getElementById('client-form-subtitle').textContent = 'Modifier les informations du client (mot de passe optionnel)';
+            document.getElementById('client-form-subtitle').textContent = 'Modifier les informations du client';
             document.getElementById('client-submit-btn').innerHTML = '<i class="fas fa-save"></i> Mettre à jour';
 
             switchTab('clients');
@@ -7089,7 +7022,6 @@
         function resetClientForm() {
             document.getElementById('client-form').reset();
             document.getElementById('client-id').value = '';
-            document.getElementById('client-password').value = '';
             const avatarInput = document.getElementById('client-avatar-input');
             if (avatarInput) avatarInput.value = '';
             refreshClientAvatarPreview('');
