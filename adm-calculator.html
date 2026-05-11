@@ -3535,6 +3535,55 @@
         }
         .decl-panel { display: none; }
         .decl-panel.active { display: block; }
+        .decl-subnav {
+            position: fixed;
+            left: 10px;
+            right: 10px;
+            bottom: calc(72px + env(safe-area-inset-bottom));
+            z-index: 315;
+            margin: 0 !important;
+            padding: 8px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(56, 106, 190, 0.18);
+            box-shadow: 0 14px 28px rgba(15, 52, 116, 0.18);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+        body.use-main-declarant-nav .decl-subnav {
+            display: none !important;
+        }
+        .decl-subnav .decl-menu-btn {
+            min-height: 46px;
+            font-size: 0.74rem;
+            padding: 8px 6px;
+            border-radius: 10px;
+        }
+        #declarant-tab.tab-content {
+            padding-bottom: 168px !important;
+        }
+        html[data-theme="dark"] .decl-subnav {
+            background: rgba(16, 32, 58, 0.96);
+            border-color: rgba(118, 166, 255, 0.2);
+        }
+        @media (min-width: 901px) {
+            .decl-subnav {
+                position: sticky;
+                left: auto;
+                right: auto;
+                bottom: auto;
+                z-index: 1;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+                padding: 0;
+                border-radius: 0;
+            }
+            #declarant-tab.tab-content {
+                padding-bottom: 94px !important;
+            }
+        }
 
         /* Declarant mobile optimization */
         #declarant-tab .stats-grid {
@@ -3989,21 +4038,22 @@
             <!-- Declarant Tab -->
             <div class="tab-content" id="declarant-tab">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" id="decl-shared-header">
                         <i class="fas fa-file-signature"></i>
                         <div>
                             <div class="card-title">Gestion Déclarant</div>
                             <div class="card-subtitle">Avance, Entrée, Sorties et calcul automatique</div>
                         </div>
                     </div>
-                    <div class="stats-grid" style="margin-bottom:16px;">
+                    <div class="stats-grid" id="decl-shared-stats" style="margin-bottom:16px;">
                         <div class="stat-card"><div class="stat-label">Total Montant Avance</div><div class="stat-value" id="decl-total-avance">0 FC</div></div>
                         <div class="stat-card"><div class="stat-label">Total Déclaration</div><div class="stat-value" id="decl-total-declaration">0 FC</div></div>
                         <div class="stat-card"><div class="stat-label">Total Pièces Entrées</div><div class="stat-value" id="decl-total-piece-entree">0</div></div>
                         <div class="stat-card"><div class="stat-label">Total Pièces Sorties</div><div class="stat-value" id="decl-total-piece-sortie">0</div></div>
                         <div class="stat-card"><div class="stat-label">Reste Pièces</div><div class="stat-value" id="decl-reste-piece">0</div></div>
                     </div>
-                    <div class="action-buttons" style="margin-bottom:14px;">
+
+                    <div class="action-buttons decl-subnav" id="decl-subnav" style="margin-bottom:14px;">
                         <button type="button" class="btn btn-primary decl-menu-btn" data-decl-menu="directory">Tableau Déclarants</button>
                         <button type="button" class="btn btn-info decl-menu-btn" data-decl-menu="movements">Mouvements</button>
                         <button type="button" class="btn btn-warning decl-menu-btn" data-decl-menu="reports">Rapports</button>
@@ -4098,7 +4148,7 @@
                                 <div class="form-group"><label class="form-label">Déclarant (vide = global)</label><select id="decl-report-declarant" class="form-control"></select></div>
                                 <div class="form-group"><label class="form-label">Du</label><input type="date" id="decl-report-date-from" class="form-control"></div>
                                 <div class="form-group"><label class="form-label">Au</label><input type="date" id="decl-report-date-to" class="form-control"></div>
-                                <div class="form-group"><label class="form-label">Format</label><select id="decl-report-format" class="form-control"><option value="html">HTML</option><option value="excel">CSV</option><option value="json">JSON</option></select></div>
+                                <div class="form-group"><label class="form-label">Format</label><select id="decl-report-format" class="form-control"><option value="html">HTML</option></select></div>
                             </div>
                             <button type="button" class="btn btn-info" id="declarant-generate-report-btn"><i class="fas fa-file-download"></i> Générer rapport déclarant</button>
                         </div>
@@ -4743,6 +4793,7 @@
             const settingsTab = document.getElementById('settings-tab');
             const declarantTab = document.getElementById('declarant-tab');
             const notificationCenter = document.getElementById('notification-center');
+            document.body.classList.toggle('use-main-declarant-nav', isDeclarantMode);
             const forceMenuVisibility = (el, visible) => {
                 if (!el) return;
                 el.classList.toggle('hidden', !visible);
@@ -4750,13 +4801,35 @@
             };
             forceMenuVisibility(dashboardTabBtn, !isDeclarantMode);
             if (clientsTabBtn) {
-                clientsTabBtn.innerHTML = `<i class="fas fa-users"></i> ${labels.plural}<span class="tab-count" id="nav-count-clients">0</span>`;
-                forceMenuVisibility(clientsTabBtn, !isDeclarantMode);
+                if (isDeclarantMode) {
+                    clientsTabBtn.innerHTML = `<i class="fas fa-address-book"></i> Déclarant`;
+                } else {
+                    clientsTabBtn.innerHTML = `<i class="fas fa-users"></i> ${labels.plural}<span class="tab-count" id="nav-count-clients">0</span>`;
+                }
+                forceMenuVisibility(clientsTabBtn, true);
             }
-            forceMenuVisibility(transactionsTabBtn, !isDeclarantMode);
-            forceMenuVisibility(reportsTabBtn, !isDeclarantMode);
-            forceMenuVisibility(settingsTabBtn, !isDeclarantMode);
-            forceMenuVisibility(declarantTabBtn, isDeclarantMode);
+            if (transactionsTabBtn) {
+                if (isDeclarantMode) transactionsTabBtn.innerHTML = '<i class="fas fa-layer-group"></i> Mouvements';
+                else transactionsTabBtn.innerHTML = '<i class="fas fa-exchange-alt"></i> Transactions<span class="tab-count" id="nav-count-transactions">0</span>';
+            }
+            if (reportsTabBtn) {
+                if (isDeclarantMode) reportsTabBtn.innerHTML = '<i class="fas fa-file-alt"></i> Rapports';
+                else reportsTabBtn.innerHTML = '<i class="fas fa-file-alt"></i> Rapports';
+            }
+            if (settingsTabBtn) {
+                if (isDeclarantMode) settingsTabBtn.innerHTML = '<i class="fas fa-chart-line"></i> Analyse';
+                else settingsTabBtn.innerHTML = '<i class="fas fa-cog"></i> Paramètres';
+            }
+            if (isDeclarantMode) {
+                forceMenuVisibility(transactionsTabBtn, false);
+                forceMenuVisibility(settingsTabBtn, false);
+                forceMenuVisibility(reportsTabBtn, true);
+            } else {
+                forceMenuVisibility(transactionsTabBtn, true);
+                forceMenuVisibility(reportsTabBtn, true);
+                forceMenuVisibility(settingsTabBtn, true);
+            }
+            forceMenuVisibility(declarantTabBtn, false);
             if (dashboardTab) dashboardTab.classList.toggle('hidden', isDeclarantMode);
             if (clientsTab) clientsTab.classList.toggle('hidden', isDeclarantMode);
             if (transactionsTab) transactionsTab.classList.toggle('hidden', isDeclarantMode);
@@ -6649,8 +6722,24 @@
 
         // =============== TAB MANAGEMENT ===============
         function switchTab(tabId) {
-            if (currentManagementMode === 'declarant' && tabId !== 'declarant') {
-                tabId = 'declarant';
+            if (currentManagementMode === 'declarant') {
+                const declarantMenuMap = {
+                    declarant: 'directory',
+                    clients: 'directory',
+                    transactions: 'movements',
+                    reports: 'reports',
+                    settings: 'analysis'
+                };
+                const menuKey = declarantMenuMap[tabId] || 'directory';
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                const selectedTabButton = document.querySelector(`[data-tab="${tabId}"]`) || document.querySelector('[data-tab="declarant"]');
+                if (selectedTabButton) selectedTabButton.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                const decTab = document.getElementById('declarant-tab');
+                if (decTab) decTab.classList.add('active');
+                switchDeclarantPanel(menuKey);
+                if (decTab) applyRevealAnimations(decTab);
+                return;
             }
             if (tabId === 'reports' && !enforcePermission('admin', 'Accès réservé à l’admin')) return;
 
@@ -7472,6 +7561,11 @@
             document.querySelectorAll('#declarant-tab .decl-panel').forEach(p => p.classList.remove('active'));
             const panel = document.getElementById(target);
             if (panel) panel.classList.add('active');
+            const sharedHeader = document.getElementById('decl-shared-header');
+            const sharedStats = document.getElementById('decl-shared-stats');
+            const hideShared = menuKey === 'reports';
+            if (sharedHeader) sharedHeader.classList.toggle('hidden', hideShared);
+            if (sharedStats) sharedStats.classList.toggle('hidden', hideShared);
         }
 
         function renderDeclarantsDirectory() {
