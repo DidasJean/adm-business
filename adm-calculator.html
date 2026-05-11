@@ -3533,6 +3533,8 @@
         .data-table th {
             font-weight: 700;
         }
+        .decl-panel { display: none; }
+        .decl-panel.active { display: block; }
 
         /* Declarant mobile optimization */
         #declarant-tab .stats-grid {
@@ -4001,100 +4003,111 @@
                         <div class="stat-card"><div class="stat-label">Total Pièces Sorties</div><div class="stat-value" id="decl-total-piece-sortie">0</div></div>
                         <div class="stat-card"><div class="stat-label">Reste Pièces</div><div class="stat-value" id="decl-reste-piece">0</div></div>
                     </div>
+                    <div class="action-buttons" style="margin-bottom:14px;">
+                        <button type="button" class="btn btn-primary decl-menu-btn" data-decl-menu="directory">Tableau Déclarants</button>
+                        <button type="button" class="btn btn-info decl-menu-btn" data-decl-menu="movements">Mouvements</button>
+                        <button type="button" class="btn btn-warning decl-menu-btn" data-decl-menu="reports">Rapports</button>
+                        <button type="button" class="btn btn-success decl-menu-btn" data-decl-menu="analysis">Analyse</button>
+                    </div>
 
-                    <div class="app-layout">
+                    <div class="app-layout decl-panel active" id="decl-panel-directory">
                         <div class="left-column">
                             <div class="card">
                                 <div class="card-header">
-                                    <i class="fas fa-money-bill-wave"></i>
+                                    <i class="fas fa-user-plus"></i>
                                     <div>
-                                        <div class="card-title">Avance</div>
-                                        <div class="card-subtitle">Date, motif, montant</div>
+                                        <div class="card-title">Nouveau Déclarant</div>
+                                        <div class="card-subtitle">Créer un profil déclarant</div>
                                     </div>
                                 </div>
-                                <form id="declarant-avance-form">
-                                    <div class="form-group"><label class="form-label">Date</label><input type="date" id="decl-avance-date" class="form-control" required></div>
-                                    <div class="form-group"><label class="form-label">Motif</label><input type="text" id="decl-avance-motif" class="form-control" placeholder="Motif" required></div>
-                                    <div class="form-group"><label class="form-label">Montant (FC)</label><input type="text" id="decl-avance-montant" class="form-control" inputmode="numeric" placeholder="0" required></div>
-                                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Ajouter Avance</button>
-                                </form>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-header">
-                                    <i class="fas fa-arrow-down"></i>
-                                    <div>
-                                        <div class="card-title">Entrée</div>
-                                        <div class="card-subtitle">Date, pièce, déclaration</div>
-                                    </div>
-                                </div>
-                                <form id="declarant-entree-form">
-                                    <div class="form-group"><label class="form-label">Date</label><input type="date" id="decl-entree-date" class="form-control" required></div>
-                                    <div class="form-group"><label class="form-label">Pièce</label><input type="text" id="decl-entree-piece" class="form-control" inputmode="numeric" placeholder="0" required></div>
-                                    <div class="form-group"><label class="form-label">Déclaration (FC)</label><input type="text" id="decl-entree-declaration" class="form-control" inputmode="numeric" placeholder="0" required></div>
-                                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Ajouter Entrée</button>
-                                </form>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-header">
-                                    <i class="fas fa-arrow-up"></i>
-                                    <div>
-                                        <div class="card-title">Sorties</div>
-                                        <div class="card-subtitle">Date, pièce, chauffeur</div>
-                                    </div>
-                                </div>
-                                <form id="declarant-sortie-form">
-                                    <div class="form-group"><label class="form-label">Date</label><input type="date" id="decl-sortie-date" class="form-control" required></div>
-                                    <div class="form-group"><label class="form-label">Pièce</label><input type="text" id="decl-sortie-piece" class="form-control" inputmode="numeric" placeholder="0" required></div>
-                                    <div class="form-group"><label class="form-label">Chauffeur</label><input type="text" id="decl-sortie-chauffeur" class="form-control" placeholder="Nom du chauffeur" required></div>
-                                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Ajouter Sortie</button>
+                                <form id="declarant-create-form">
+                                    <div class="form-group"><label class="form-label">Nom déclarant</label><input type="text" id="decl-create-name" class="form-control" required></div>
+                                    <div class="form-group"><label class="form-label">Téléphone</label><input type="text" id="decl-create-phone" class="form-control"></div>
+                                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Ajouter déclarant</button>
                                 </form>
                             </div>
                         </div>
                         <div class="right-column">
                             <div class="card">
                                 <div class="card-header">
-                                    <i class="fas fa-table"></i>
+                                    <i class="fas fa-address-book"></i>
                                     <div>
-                                        <div class="card-title">Registre Déclarant</div>
-                                        <div class="card-subtitle">Historique des trois colonnes</div>
+                                        <div class="card-title">Liste des Déclarants</div>
+                                        <div class="card-subtitle">Recherche et portefeuille</div>
                                     </div>
                                 </div>
-                                <div class="form-row mb-20">
-                                    <div class="form-group">
-                                        <label class="form-label">Du</label>
-                                        <input type="date" id="decl-report-date-from" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Au</label>
-                                        <input type="date" id="decl-report-date-to" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Format rapport</label>
-                                        <select id="decl-report-format" class="form-control">
-                                            <option value="html">HTML</option>
-                                            <option value="excel">CSV</option>
-                                            <option value="json">JSON</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="action-buttons mb-20">
-                                    <button type="button" class="btn btn-info" id="declarant-generate-report-btn">
-                                        <i class="fas fa-file-download"></i> Générer rapport déclarant
-                                    </button>
-                                </div>
-                                <div style="overflow:auto;">
-                                    <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Type</th><th>Date</th><th>Motif / Chauffeur</th><th>Pièce</th><th>Montant Déclaration</th><th>Montant Avance</th><th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="declarant-rows"></tbody>
-                                    </table>
-                                </div>
+                                <div class="form-group"><input type="text" id="decl-search" class="form-control" placeholder="Rechercher déclarant..."></div>
+                                <div id="decl-list"></div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="app-layout decl-panel" id="decl-panel-movements">
+                        <div class="left-column">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-layer-group"></i>
+                                    <div>
+                                        <div class="card-title">Mouvements Déclarant</div>
+                                        <div class="card-subtitle">Saisie avance / entrée / sortie</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Déclarant</label>
+                                    <select id="decl-move-declarant" class="form-control"></select>
+                                </div>
+                                <form id="declarant-avance-form">
+                                    <div class="form-group"><label class="form-label">Date Avance</label><input type="date" id="decl-avance-date" class="form-control" required></div>
+                                    <div class="form-group"><label class="form-label">Motif</label><input type="text" id="decl-avance-motif" class="form-control" required></div>
+                                    <div class="form-group"><label class="form-label">Montant (FC)</label><input type="text" id="decl-avance-montant" class="form-control" inputmode="numeric" required></div>
+                                    <button type="submit" class="btn btn-success btn-block">Ajouter Avance</button>
+                                </form>
+                                <hr style="margin:12px 0;border:none;border-top:1px solid rgba(140,160,190,.25);">
+                                <form id="declarant-entree-form">
+                                    <div class="form-group"><label class="form-label">Date Entrée</label><input type="date" id="decl-entree-date" class="form-control" required></div>
+                                    <div class="form-group"><label class="form-label">Pièce</label><input type="text" id="decl-entree-piece" class="form-control" inputmode="numeric" required></div>
+                                    <div class="form-group"><label class="form-label">Déclaration (FC)</label><input type="text" id="decl-entree-declaration" class="form-control" inputmode="numeric" required></div>
+                                    <button type="submit" class="btn btn-success btn-block">Ajouter Entrée</button>
+                                </form>
+                                <hr style="margin:12px 0;border:none;border-top:1px solid rgba(140,160,190,.25);">
+                                <form id="declarant-sortie-form">
+                                    <div class="form-group"><label class="form-label">Date Sortie</label><input type="date" id="decl-sortie-date" class="form-control" required></div>
+                                    <div class="form-group"><label class="form-label">Pièce</label><input type="text" id="decl-sortie-piece" class="form-control" inputmode="numeric" required></div>
+                                    <div class="form-group"><label class="form-label">Chauffeur</label><input type="text" id="decl-sortie-chauffeur" class="form-control" required></div>
+                                    <button type="submit" class="btn btn-success btn-block">Ajouter Sortie</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="right-column">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <div class="card-title">Mouvements récents</div>
+                                        <div class="card-subtitle">10 derniers mouvements</div>
+                                    </div>
+                                </div>
+                                <div id="decl-recent-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="decl-panel" id="decl-panel-reports">
+                        <div class="card">
+                            <div class="form-row mb-20">
+                                <div class="form-group"><label class="form-label">Déclarant (vide = global)</label><select id="decl-report-declarant" class="form-control"></select></div>
+                                <div class="form-group"><label class="form-label">Du</label><input type="date" id="decl-report-date-from" class="form-control"></div>
+                                <div class="form-group"><label class="form-label">Au</label><input type="date" id="decl-report-date-to" class="form-control"></div>
+                                <div class="form-group"><label class="form-label">Format</label><select id="decl-report-format" class="form-control"><option value="html">HTML</option><option value="excel">CSV</option><option value="json">JSON</option></select></div>
+                            </div>
+                            <button type="button" class="btn btn-info" id="declarant-generate-report-btn"><i class="fas fa-file-download"></i> Générer rapport déclarant</button>
+                        </div>
+                    </div>
+
+                    <div class="decl-panel" id="decl-panel-analysis">
+                        <div class="card">
+                            <div class="card-header"><i class="fas fa-chart-line"></i><div><div class="card-title">Analyse Déclarants</div><div class="card-subtitle">Performance et alertes</div></div></div>
+                            <div id="decl-analysis-list"></div>
                         </div>
                     </div>
                 </div>
@@ -4615,6 +4628,7 @@
             declarantAdvances: 'adm_decl_advances',
             declarantEntries: 'adm_decl_entries',
             declarantExits: 'adm_decl_exits',
+            declarants: 'adm_declarants',
             settings: 'adm_pro_settings',
             exchangeRate: 'adm_exchange_rate',
             emergencySnapshot: 'adm_emergency_snapshot',
@@ -5833,6 +5847,7 @@
                 declarantAdvances: Array.isArray(declarantAdvances) ? declarantAdvances.slice(-300) : [],
                 declarantEntries: Array.isArray(declarantEntries) ? declarantEntries.slice(-300) : [],
                 declarantExits: Array.isArray(declarantExits) ? declarantExits.slice(-300) : [],
+                declarants: Array.isArray(declarants) ? declarants.slice(-300) : [],
                 settings,
                 exchangeRate,
                 reason,
@@ -5893,6 +5908,10 @@
                 declarantExits = snapshot.declarantExits;
                 localStorage.setItem(STORAGE_KEYS.declarantExits, JSON.stringify(declarantExits));
             }
+            if (Array.isArray(snapshot.declarants)) {
+                declarants = snapshot.declarants;
+                localStorage.setItem(STORAGE_KEYS.declarants, JSON.stringify(declarants));
+            }
 
             if (Number.isFinite(Number(snapshot.exchangeRate))) {
                 exchangeRate = Number(snapshot.exchangeRate);
@@ -5918,6 +5937,11 @@
         let declarantAdvances = readStoredArray(STORAGE_KEYS.declarantAdvances);
         let declarantEntries = readStoredArray(STORAGE_KEYS.declarantEntries);
         let declarantExits = readStoredArray(STORAGE_KEYS.declarantExits);
+        let declarants = readStoredArray(STORAGE_KEYS.declarants);
+        let editingDeclarantId = '';
+        let editingAdvanceId = '';
+        let editingEntryId = '';
+        let editingExitId = '';
         let settings = readStoredObject(STORAGE_KEYS.settings, getDefaultSettings());
         let exchangeRate = readStoredNumber(STORAGE_KEYS.exchangeRate, 2700);
 
@@ -6426,7 +6450,14 @@
             on('declarant-avance-form', 'submit', handleDeclarantAvanceSubmit);
             on('declarant-entree-form', 'submit', handleDeclarantEntreeSubmit);
             on('declarant-sortie-form', 'submit', handleDeclarantSortieSubmit);
+            on('declarant-create-form', 'submit', handleDeclarantCreateSubmit);
             on('declarant-generate-report-btn', 'click', generateDeclarantReport);
+            on('decl-search', 'input', renderDeclarantsDirectory);
+            document.querySelectorAll('.decl-menu-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchDeclarantPanel(this.getAttribute('data-decl-menu') || 'directory');
+                });
+            });
 
             // Transaction form
             on('transaction-form', 'submit', handleTransactionSubmit);
@@ -7412,6 +7443,7 @@
             safeStorageSetItem(STORAGE_KEYS.declarantAdvances, JSON.stringify(declarantAdvances));
             safeStorageSetItem(STORAGE_KEYS.declarantEntries, JSON.stringify(declarantEntries));
             safeStorageSetItem(STORAGE_KEYS.declarantExits, JSON.stringify(declarantExits));
+            safeStorageSetItem(STORAGE_KEYS.declarants, JSON.stringify(declarants));
             createEmergencySnapshot('saveDeclarantData');
         }
 
@@ -7429,31 +7461,89 @@
             };
         }
 
-        function renderDeclarantRows() {
-            const tbody = document.getElementById('declarant-rows');
-            if (!tbody) return;
-            const rows = [];
-            declarantAdvances.forEach(item => rows.push({ type: 'Avance', date: item.date, label: item.motif, piece: '', declaration: '', avance: item.amount, id: item.id }));
-            declarantEntries.forEach(item => rows.push({ type: 'Entrée', date: item.date, label: '-', piece: item.piece, declaration: item.declaration, avance: '', id: item.id }));
-            declarantExits.forEach(item => rows.push({ type: 'Sorties', date: item.date, label: item.chauffeur, piece: item.piece, declaration: '', avance: '', id: item.id }));
-            rows.sort((a, b) => new Date(b.date) - new Date(a.date));
+        function getDeclarantNameById(id) {
+            const found = declarants.find(d => d.id === id);
+            return found ? found.name : 'Inconnu';
+        }
 
-            if (!rows.length) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#888;">Aucune donnée déclarant</td></tr>';
+        function switchDeclarantPanel(menuKey = 'directory') {
+            const map = { directory: 'decl-panel-directory', movements: 'decl-panel-movements', reports: 'decl-panel-reports', analysis: 'decl-panel-analysis' };
+            const target = map[menuKey] || map.directory;
+            document.querySelectorAll('#declarant-tab .decl-panel').forEach(p => p.classList.remove('active'));
+            const panel = document.getElementById(target);
+            if (panel) panel.classList.add('active');
+        }
+
+        function renderDeclarantsDirectory() {
+            const list = document.getElementById('decl-list');
+            if (!list) return;
+            const q = (document.getElementById('decl-search')?.value || '').toLowerCase();
+            const visible = declarants.filter(d => !q || (d.name || '').toLowerCase().includes(q) || (d.phone || '').toLowerCase().includes(q));
+            if (!visible.length) {
+                list.innerHTML = '<div style="color:#777;">Aucun déclarant.</div>';
                 return;
             }
-
-            tbody.innerHTML = rows.map(row => `
-                <tr>
-                    <td>${escapeHTML(row.type)}</td>
-                    <td>${escapeHTML(row.date || '')}</td>
-                    <td>${escapeHTML(row.label || '-')}</td>
-                    <td>${row.piece !== '' ? escapeHTML(String(row.piece)) : '-'}</td>
-                    <td>${row.declaration !== '' ? formatCurrency(row.declaration) : '-'}</td>
-                    <td>${row.avance !== '' ? formatCurrency(row.avance) : '-'}</td>
-                    <td><button type="button" class="client-action-btn" onclick="deleteDeclarantRow('${escapeHTML(row.type)}','${escapeHTML(row.id)}')">Supprimer</button></td>
-                </tr>
+            list.innerHTML = visible.map(d => `
+                <div class="client-card">
+                    <div class="client-header">
+                        <div>
+                            <div class="client-name">${escapeHTML(d.name || '')}</div>
+                            <div class="client-contact">${escapeHTML(d.phone || '')}</div>
+                        </div>
+                    </div>
+                    <div class="client-actions">
+                        <button type="button" class="client-action-btn" onclick="editDeclarant('${escapeHTML(d.id)}')">Modifier</button>
+                        <button type="button" class="client-action-btn" onclick="deleteDeclarant('${escapeHTML(d.id)}')">Supprimer</button>
+                    </div>
+                </div>
             `).join('');
+        }
+
+        function renderDeclarantSelectors() {
+            const options = [`<option value="">Sélectionner déclarant</option>`, ...declarants.map(d => `<option value="${escapeHTML(d.id)}">${escapeHTML(d.name)}</option>`)];
+            const moveSelect = document.getElementById('decl-move-declarant');
+            if (moveSelect) moveSelect.innerHTML = options.join('');
+            const reportSelect = document.getElementById('decl-report-declarant');
+            if (reportSelect) reportSelect.innerHTML = [`<option value="">Global (tous)</option>`, ...declarants.map(d => `<option value="${escapeHTML(d.id)}">${escapeHTML(d.name)}</option>`)].join('');
+        }
+
+        function renderDeclarantRecentMovements() {
+            const box = document.getElementById('decl-recent-list');
+            if (!box) return;
+            const rows = [];
+            declarantAdvances.forEach(r => rows.push({ type: 'Avance', id: r.id, date: r.date, text: `${getDeclarantNameById(r.declarantId)} - Avance ${formatCurrency(r.amount)} (${r.motif})` }));
+            declarantEntries.forEach(r => rows.push({ type: 'Entrée', id: r.id, date: r.date, text: `${getDeclarantNameById(r.declarantId)} - Entrée ${formatFCNumber(r.piece, 0)} pièces / ${formatCurrency(r.declaration)}` }));
+            declarantExits.forEach(r => rows.push({ type: 'Sorties', id: r.id, date: r.date, text: `${getDeclarantNameById(r.declarantId)} - Sortie ${formatFCNumber(r.piece, 0)} pièces (${r.chauffeur})` }));
+            rows.sort((a, b) => new Date(b.date) - new Date(a.date));
+            if (!rows.length) {
+                box.innerHTML = '<div style="color:#777;">Aucun mouvement.</div>';
+                return;
+            }
+            box.innerHTML = rows.slice(0, 10).map(r => `
+                <div style="padding:8px 0;border-bottom:1px solid rgba(140,160,190,.2);display:flex;gap:8px;justify-content:space-between;align-items:center;">
+                    <div>${escapeHTML(r.date)} - ${escapeHTML(r.text)}</div>
+                    <div style="display:flex;gap:6px;">
+                        <button type="button" class="client-action-btn" onclick="editDeclarantMovement('${escapeHTML(r.type)}','${escapeHTML(r.id)}')">Modifier</button>
+                        <button type="button" class="client-action-btn" onclick="deleteDeclarantRow('${escapeHTML(r.type)}','${escapeHTML(r.id)}')">Supprimer</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDeclarantAnalysis() {
+            const box = document.getElementById('decl-analysis-list');
+            if (!box) return;
+            if (!declarants.length) {
+                box.innerHTML = '<div style="color:#777;">Aucun déclarant à analyser.</div>';
+                return;
+            }
+            const items = declarants.map(d => {
+                const e = declarantEntries.filter(x => x.declarantId === d.id).reduce((s, x) => s + (Number(x.piece) || 0), 0);
+                const s = declarantExits.filter(x => x.declarantId === d.id).reduce((s0, x) => s0 + (Number(x.piece) || 0), 0);
+                const reste = e - s;
+                return `<div style="padding:8px 0;border-bottom:1px solid rgba(140,160,190,.2);"><strong>${escapeHTML(d.name)}</strong> | Entrées: ${formatFCNumber(e,0)} | Sorties: ${formatFCNumber(s,0)} | Reste: ${formatFCNumber(reste,0)}</div>`;
+            });
+            box.innerHTML = items.join('');
         }
 
         function renderDeclarantSummary() {
@@ -7472,8 +7562,30 @@
 
         function loadDeclarantData() {
             renderDeclarantSummary();
-            renderDeclarantRows();
+            renderDeclarantsDirectory();
+            renderDeclarantSelectors();
+            renderDeclarantRecentMovements();
+            renderDeclarantAnalysis();
             updateDataStats();
+        }
+
+        function handleDeclarantCreateSubmit(e) {
+            e.preventDefault();
+            const name = (document.getElementById('decl-create-name').value || '').trim();
+            const phone = (document.getElementById('decl-create-phone').value || '').trim();
+            if (!name) return;
+            if (editingDeclarantId) {
+                const idx = declarants.findIndex(d => d.id === editingDeclarantId);
+                if (idx !== -1) declarants[idx] = { ...declarants[idx], name, phone, updatedAt: new Date().toISOString() };
+                editingDeclarantId = '';
+                showToast('Déclarant modifié', 'success');
+            } else {
+                declarants.push({ id: `decl_${Date.now()}_${Math.random().toString(36).slice(2,7)}`, name, phone, createdAt: new Date().toISOString() });
+                showToast('Déclarant ajouté', 'success');
+            }
+            saveDeclarantData();
+            loadDeclarantData();
+            document.getElementById('declarant-create-form').reset();
         }
 
         function handleDeclarantAvanceSubmit(e) {
@@ -7481,11 +7593,20 @@
             const date = document.getElementById('decl-avance-date').value;
             const motif = (document.getElementById('decl-avance-motif').value || '').trim();
             const amount = parseLooseNumber(document.getElementById('decl-avance-montant').value);
-            if (!date || !motif || amount <= 0) {
+            const declarantId = document.getElementById('decl-move-declarant')?.value || '';
+            if (!date || !motif || amount <= 0 || !declarantId) {
                 showToast('Complétez correctement l’avance', 'error');
                 return;
             }
-            declarantAdvances.push({ id: `da_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, date, motif, amount, createdAt: new Date().toISOString() });
+            if (editingAdvanceId) {
+                const idx = declarantAdvances.findIndex(r => r.id === editingAdvanceId);
+                if (idx !== -1) declarantAdvances[idx] = { ...declarantAdvances[idx], declarantId, date, motif, amount, updatedAt: new Date().toISOString() };
+                editingAdvanceId = '';
+                showToast('Avance modifiée', 'success');
+            } else {
+                declarantAdvances.push({ id: `da_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, declarantId, date, motif, amount, createdAt: new Date().toISOString() });
+                showToast('Avance ajoutée', 'success');
+            }
             saveDeclarantData();
             loadDeclarantData();
             document.getElementById('declarant-avance-form').reset();
@@ -7496,7 +7617,8 @@
             const date = document.getElementById('decl-entree-date').value;
             const piece = parseLooseNumber(document.getElementById('decl-entree-piece').value);
             const declaration = parseLooseNumber(document.getElementById('decl-entree-declaration').value);
-            if (!date || piece <= 0 || declaration < 0) {
+            const declarantId = document.getElementById('decl-move-declarant')?.value || '';
+            if (!date || piece <= 0 || declaration < 0 || !declarantId) {
                 showToast('Complétez correctement l’entrée', 'error');
                 return;
             }
@@ -7504,7 +7626,15 @@
                 showToast('La pièce d’entrée doit être un nombre entier', 'error');
                 return;
             }
-            declarantEntries.push({ id: `de_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, date, piece, declaration, createdAt: new Date().toISOString() });
+            if (editingEntryId) {
+                const idx = declarantEntries.findIndex(r => r.id === editingEntryId);
+                if (idx !== -1) declarantEntries[idx] = { ...declarantEntries[idx], declarantId, date, piece, declaration, updatedAt: new Date().toISOString() };
+                editingEntryId = '';
+                showToast('Entrée modifiée', 'success');
+            } else {
+                declarantEntries.push({ id: `de_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, declarantId, date, piece, declaration, createdAt: new Date().toISOString() });
+                showToast('Entrée ajoutée', 'success');
+            }
             saveDeclarantData();
             loadDeclarantData();
             document.getElementById('declarant-entree-form').reset();
@@ -7515,7 +7645,8 @@
             const date = document.getElementById('decl-sortie-date').value;
             const piece = parseLooseNumber(document.getElementById('decl-sortie-piece').value);
             const chauffeur = (document.getElementById('decl-sortie-chauffeur').value || '').trim();
-            if (!date || piece <= 0 || !chauffeur) {
+            const declarantId = document.getElementById('decl-move-declarant')?.value || '';
+            if (!date || piece <= 0 || !chauffeur || !declarantId) {
                 showToast('Complétez correctement la sortie', 'error');
                 return;
             }
@@ -7524,15 +7655,81 @@
                 return;
             }
             const totals = computeDeclarantTotals();
-            if (piece > totals.restePiece) {
-                showToast(`Sortie refusée: reste pièces insuffisant (${formatFCNumber(totals.restePiece, 0)})`, 'error');
+            let allowedReste = totals.restePiece;
+            if (editingExitId) {
+                const existing = declarantExits.find(x => x.id === editingExitId);
+                if (existing) allowedReste += Number(existing.piece) || 0;
+            }
+            if (piece > allowedReste) {
+                showToast(`Sortie refusée: reste pièces insuffisant (${formatFCNumber(allowedReste, 0)})`, 'error');
                 return;
             }
-            declarantExits.push({ id: `ds_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, date, piece, chauffeur, createdAt: new Date().toISOString() });
+            if (editingExitId) {
+                const idx = declarantExits.findIndex(r => r.id === editingExitId);
+                if (idx !== -1) declarantExits[idx] = { ...declarantExits[idx], declarantId, date, piece, chauffeur, updatedAt: new Date().toISOString() };
+                editingExitId = '';
+                showToast('Sortie modifiée', 'success');
+            } else {
+                declarantExits.push({ id: `ds_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, declarantId, date, piece, chauffeur, createdAt: new Date().toISOString() });
+                showToast('Sortie ajoutée', 'success');
+            }
             saveDeclarantData();
             loadDeclarantData();
             document.getElementById('declarant-sortie-form').reset();
         }
+
+        window.editDeclarant = function(id) {
+            const d = declarants.find(x => x.id === id);
+            if (!d) return;
+            editingDeclarantId = d.id;
+            document.getElementById('decl-create-name').value = d.name || '';
+            document.getElementById('decl-create-phone').value = d.phone || '';
+            switchDeclarantPanel('directory');
+        };
+
+        window.deleteDeclarant = function(id) {
+            if (!confirm('Supprimer ce déclarant et tous ses mouvements ?')) return;
+            declarants = declarants.filter(d => d.id !== id);
+            declarantAdvances = declarantAdvances.filter(r => r.declarantId !== id);
+            declarantEntries = declarantEntries.filter(r => r.declarantId !== id);
+            declarantExits = declarantExits.filter(r => r.declarantId !== id);
+            saveDeclarantData();
+            loadDeclarantData();
+            showToast('Déclarant supprimé', 'success');
+        };
+
+        window.editDeclarantMovement = function(type, id) {
+            switchDeclarantPanel('movements');
+            if (type === 'Avance') {
+                const r = declarantAdvances.find(x => x.id === id);
+                if (!r) return;
+                editingAdvanceId = r.id; editingEntryId = ''; editingExitId = '';
+                document.getElementById('decl-move-declarant').value = r.declarantId || '';
+                document.getElementById('decl-avance-date').value = r.date || '';
+                document.getElementById('decl-avance-motif').value = r.motif || '';
+                setFormattedFCFieldValue('decl-avance-montant', r.amount || 0, 0);
+                return;
+            }
+            if (type === 'Entrée') {
+                const r = declarantEntries.find(x => x.id === id);
+                if (!r) return;
+                editingEntryId = r.id; editingAdvanceId = ''; editingExitId = '';
+                document.getElementById('decl-move-declarant').value = r.declarantId || '';
+                document.getElementById('decl-entree-date').value = r.date || '';
+                setFormattedFCFieldValue('decl-entree-piece', r.piece || 0, 0);
+                setFormattedFCFieldValue('decl-entree-declaration', r.declaration || 0, 0);
+                return;
+            }
+            if (type === 'Sorties') {
+                const r = declarantExits.find(x => x.id === id);
+                if (!r) return;
+                editingExitId = r.id; editingAdvanceId = ''; editingEntryId = '';
+                document.getElementById('decl-move-declarant').value = r.declarantId || '';
+                document.getElementById('decl-sortie-date').value = r.date || '';
+                setFormattedFCFieldValue('decl-sortie-piece', r.piece || 0, 0);
+                document.getElementById('decl-sortie-chauffeur').value = r.chauffeur || '';
+            }
+        };
 
         window.deleteDeclarantRow = function(type, id) {
             if (!id) return;
@@ -7547,24 +7744,28 @@
         function getDeclarantFilteredData() {
             const from = document.getElementById('decl-report-date-from')?.value || '';
             const to = document.getElementById('decl-report-date-to')?.value || '';
+            const declarantId = document.getElementById('decl-report-declarant')?.value || '';
             const inRange = (d) => {
                 if (!d) return true;
                 if (from && d < from) return false;
                 if (to && d > to) return false;
                 return true;
             };
+            const byDeclarant = (r) => !declarantId || r.declarantId === declarantId;
             return {
                 from,
                 to,
-                advances: declarantAdvances.filter(r => inRange(r.date)),
-                entries: declarantEntries.filter(r => inRange(r.date)),
-                exits: declarantExits.filter(r => inRange(r.date))
+                declarantId,
+                advances: declarantAdvances.filter(r => inRange(r.date) && byDeclarant(r)),
+                entries: declarantEntries.filter(r => inRange(r.date) && byDeclarant(r)),
+                exits: declarantExits.filter(r => inRange(r.date) && byDeclarant(r))
             };
         }
 
         function generateDeclarantReport() {
             const format = document.getElementById('decl-report-format')?.value || 'html';
             const scoped = getDeclarantFilteredData();
+            const targetName = scoped.declarantId ? getDeclarantNameById(scoped.declarantId) : 'Global';
             const totalAvance = scoped.advances.reduce((s, r) => s + (Number(r.amount) || 0), 0);
             const totalDeclaration = scoped.entries.reduce((s, r) => s + (Number(r.declaration) || 0), 0);
             const totalPieceEntree = scoped.entries.reduce((s, r) => s + (Number(r.piece) || 0), 0);
@@ -7575,6 +7776,7 @@
             if (format === 'json') {
                 const payload = {
                     module: 'gestion-declarant',
+                    declarant: targetName,
                     scope: { from: scoped.from || null, to: scoped.to || null },
                     advances: scoped.advances,
                     entries: scoped.entries,
@@ -7608,6 +7810,7 @@
             const reportScope = scoped.from || scoped.to ? `Période: ${scoped.from || 'début'} à ${scoped.to || 'aujourd’hui'}` : 'Période: complète';
             const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Rapport déclarant</title></head><body style="font-family:Arial,sans-serif;padding:18px;">
                 <h2>Rapport déclarant</h2>
+                <p><strong>Cible:</strong> ${escapeHTML(targetName)}</p>
                 <p>${escapeHTML(reportScope)}</p>
                 <p><strong>Total Avance:</strong> ${formatCurrency(totalAvance)} | <strong>Total Déclaration:</strong> ${formatCurrency(totalDeclaration)} | <strong>Pièces Entrées:</strong> ${formatFCNumber(totalPieceEntree, 0)} | <strong>Pièces Sorties:</strong> ${formatFCNumber(totalPieceSortie, 0)} | <strong>Reste Pièces:</strong> ${formatFCNumber(restePiece, 0)}</p>
                 <table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#0f2d5c;color:#fff;"><th style="padding:8px;border:1px solid #ddd;">Type</th><th style="padding:8px;border:1px solid #ddd;">Date</th><th style="padding:8px;border:1px solid #ddd;">Motif/Chauffeur</th><th style="padding:8px;border:1px solid #ddd;">Pièce</th><th style="padding:8px;border:1px solid #ddd;">Déclaration</th><th style="padding:8px;border:1px solid #ddd;">Avance</th></tr></thead><tbody>
@@ -8764,6 +8967,7 @@
                 clients: clients,
                 transactions: transactions,
                 clientNotifications: clientNotifications,
+                declarants: declarants,
                 declarantAdvances: declarantAdvances,
                 declarantEntries: declarantEntries,
                 declarantExits: declarantExits,
@@ -8802,6 +9006,7 @@
                 if (backup.clients) clients = backup.clients;
                 if (backup.transactions) transactions = backup.transactions;
                 if (Array.isArray(backup.clientNotifications)) clientNotifications = backup.clientNotifications;
+                if (Array.isArray(backup.declarants)) declarants = backup.declarants;
                 if (Array.isArray(backup.declarantAdvances)) declarantAdvances = backup.declarantAdvances;
                 if (Array.isArray(backup.declarantEntries)) declarantEntries = backup.declarantEntries;
                 if (Array.isArray(backup.declarantExits)) declarantExits = backup.declarantExits;
@@ -8859,6 +9064,7 @@
             declarantAdvances = [];
             declarantEntries = [];
             declarantExits = [];
+            declarants = [];
             settings = getDefaultSettings();
             exchangeRate = 2700;
             
@@ -8868,6 +9074,7 @@
             localStorage.removeItem(STORAGE_KEYS.declarantAdvances);
             localStorage.removeItem(STORAGE_KEYS.declarantEntries);
             localStorage.removeItem(STORAGE_KEYS.declarantExits);
+            localStorage.removeItem(STORAGE_KEYS.declarants);
             localStorage.removeItem('adm_pro_settings');
             localStorage.removeItem('adm_exchange_rate');
             localStorage.removeItem(ADMIN_PASSWORD_KEY);
@@ -9270,6 +9477,7 @@
             safeStorageSetItem(STORAGE_KEYS.clients, JSON.stringify(clients));
             safeStorageSetItem(STORAGE_KEYS.transactions, JSON.stringify(transactions));
             safeStorageSetItem(STORAGE_KEYS.clientNotifications, JSON.stringify(clientNotifications));
+            safeStorageSetItem(STORAGE_KEYS.declarants, JSON.stringify(declarants));
             safeStorageSetItem(STORAGE_KEYS.declarantAdvances, JSON.stringify(declarantAdvances));
             safeStorageSetItem(STORAGE_KEYS.declarantEntries, JSON.stringify(declarantEntries));
             safeStorageSetItem(STORAGE_KEYS.declarantExits, JSON.stringify(declarantExits));
