@@ -3976,6 +3976,29 @@
                                         <div class="card-subtitle">Historique des trois colonnes</div>
                                     </div>
                                 </div>
+                                <div class="form-row mb-20">
+                                    <div class="form-group">
+                                        <label class="form-label">Du</label>
+                                        <input type="date" id="decl-report-date-from" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Au</label>
+                                        <input type="date" id="decl-report-date-to" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Format rapport</label>
+                                        <select id="decl-report-format" class="form-control">
+                                            <option value="html">HTML</option>
+                                            <option value="excel">CSV</option>
+                                            <option value="json">JSON</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="action-buttons mb-20">
+                                    <button type="button" class="btn btn-info" id="declarant-generate-report-btn">
+                                        <i class="fas fa-file-download"></i> Générer rapport déclarant
+                                    </button>
+                                </div>
                                 <div style="overflow:auto;">
                                     <table class="data-table">
                                         <thead>
@@ -6300,6 +6323,7 @@
             on('declarant-avance-form', 'submit', handleDeclarantAvanceSubmit);
             on('declarant-entree-form', 'submit', handleDeclarantEntreeSubmit);
             on('declarant-sortie-form', 'submit', handleDeclarantSortieSubmit);
+            on('declarant-generate-report-btn', 'click', generateDeclarantReport);
 
             // Transaction form
             on('transaction-form', 'submit', handleTransactionSubmit);
@@ -7343,6 +7367,7 @@
         function loadDeclarantData() {
             renderDeclarantSummary();
             renderDeclarantRows();
+            updateDataStats();
         }
 
         function handleDeclarantAvanceSubmit(e) {
@@ -7369,6 +7394,10 @@
                 showToast('Complétez correctement l’entrée', 'error');
                 return;
             }
+            if (!Number.isInteger(piece)) {
+                showToast('La pièce d’entrée doit être un nombre entier', 'error');
+                return;
+            }
             declarantEntries.push({ id: `de_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, date, piece, declaration, createdAt: new Date().toISOString() });
             saveDeclarantData();
             loadDeclarantData();
@@ -7382,6 +7411,15 @@
             const chauffeur = (document.getElementById('decl-sortie-chauffeur').value || '').trim();
             if (!date || piece <= 0 || !chauffeur) {
                 showToast('Complétez correctement la sortie', 'error');
+                return;
+            }
+            if (!Number.isInteger(piece)) {
+                showToast('La pièce de sortie doit être un nombre entier', 'error');
+                return;
+            }
+            const totals = computeDeclarantTotals();
+            if (piece > totals.restePiece) {
+                showToast(`Sortie refusée: reste pièces insuffisant (${formatFCNumber(totals.restePiece, 0)})`, 'error');
                 return;
             }
             declarantExits.push({ id: `ds_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, date, piece, chauffeur, createdAt: new Date().toISOString() });
@@ -7399,6 +7437,81 @@
             loadDeclarantData();
             showToast('Ligne supprimée', 'success');
         };
+
+        function getDeclarantFilteredData() {
+            const from = document.getElementById('decl-report-date-from')?.value || '';
+            const to = document.getElementById('decl-report-date-to')?.value || '';
+            const inRange = (d) => {
+                if (!d) return true;
+                if (from && d < from) return false;
+                if (to && d > to) return false;
+                return true;
+            };
+            return {
+                from,
+                to,
+                advances: declarantAdvances.filter(r => inRange(r.date)),
+                entries: declarantEntries.filter(r => inRange(r.date)),
+                exits: declarantExits.filter(r => inRange(r.date))
+            };
+        }
+
+        function generateDeclarantReport() {
+            const format = document.getElementById('decl-report-format')?.value || 'html';
+            const scoped = getDeclarantFilteredData();
+            const totalAvance = scoped.advances.reduce((s, r) => s + (Number(r.amount) || 0), 0);
+            const totalDeclaration = scoped.entries.reduce((s, r) => s + (Number(r.declaration) || 0), 0);
+            const totalPieceEntree = scoped.entries.reduce((s, r) => s + (Number(r.piece) || 0), 0);
+            const totalPieceSortie = scoped.exits.reduce((s, r) => s + (Number(r.piece) || 0), 0);
+            const restePiece = totalPieceEntree - totalPieceSortie;
+            const filenameDate = new Date().toISOString().slice(0, 10);
+
+            if (format === 'json') {
+                const payload = {
+                    module: 'gestion-declarant',
+                    scope: { from: scoped.from || null, to: scoped.to || null },
+                    advances: scoped.advances,
+                    entries: scoped.entries,
+                    exits: scoped.exits,
+                    totals: { totalAvance, totalDeclaration, totalPieceEntree, totalPieceSortie, restePiece },
+                    generatedAt: new Date().toISOString()
+                };
+                downloadFile(JSON.stringify(payload, null, 2), `rapport-declarant-${filenameDate}.json`, 'application/json');
+                showToast('Rapport déclarant généré', 'success');
+                return;
+            }
+
+            if (format === 'excel') {
+                let csv = 'Type,Date,Motif/Chauffeur,Piece,Montant Declaration FC,Montant Avance FC\n';
+                scoped.advances.forEach(r => {
+                    csv += `"Avance","${sanitizeCsvCell(r.date)}","${sanitizeCsvCell(r.motif || '')}","","","${sanitizeCsvCell(r.amount)}"\n`;
+                });
+                scoped.entries.forEach(r => {
+                    csv += `"Entrée","${sanitizeCsvCell(r.date)}","","${sanitizeCsvCell(r.piece)}","${sanitizeCsvCell(r.declaration)}",""\n`;
+                });
+                scoped.exits.forEach(r => {
+                    csv += `"Sorties","${sanitizeCsvCell(r.date)}","${sanitizeCsvCell(r.chauffeur || '')}","${sanitizeCsvCell(r.piece)}","",""\n`;
+                });
+                csv += `\n"TOTAL","","","${sanitizeCsvCell(totalPieceEntree)}","${sanitizeCsvCell(totalDeclaration)}","${sanitizeCsvCell(totalAvance)}"\n`;
+                csv += `"RESTE PIECES","","","${sanitizeCsvCell(restePiece)}","",""\n`;
+                downloadFile(csv, `rapport-declarant-${filenameDate}.csv`, 'text/csv');
+                showToast('Rapport déclarant généré', 'success');
+                return;
+            }
+
+            const reportScope = scoped.from || scoped.to ? `Période: ${scoped.from || 'début'} à ${scoped.to || 'aujourd’hui'}` : 'Période: complète';
+            const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Rapport déclarant</title></head><body style="font-family:Arial,sans-serif;padding:18px;">
+                <h2>Rapport déclarant</h2>
+                <p>${escapeHTML(reportScope)}</p>
+                <p><strong>Total Avance:</strong> ${formatCurrency(totalAvance)} | <strong>Total Déclaration:</strong> ${formatCurrency(totalDeclaration)} | <strong>Pièces Entrées:</strong> ${formatFCNumber(totalPieceEntree, 0)} | <strong>Pièces Sorties:</strong> ${formatFCNumber(totalPieceSortie, 0)} | <strong>Reste Pièces:</strong> ${formatFCNumber(restePiece, 0)}</p>
+                <table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#0f2d5c;color:#fff;"><th style="padding:8px;border:1px solid #ddd;">Type</th><th style="padding:8px;border:1px solid #ddd;">Date</th><th style="padding:8px;border:1px solid #ddd;">Motif/Chauffeur</th><th style="padding:8px;border:1px solid #ddd;">Pièce</th><th style="padding:8px;border:1px solid #ddd;">Déclaration</th><th style="padding:8px;border:1px solid #ddd;">Avance</th></tr></thead><tbody>
+                ${scoped.advances.map(r => `<tr><td style="padding:8px;border:1px solid #ddd;">Avance</td><td style="padding:8px;border:1px solid #ddd;">${escapeHTML(r.date || '')}</td><td style="padding:8px;border:1px solid #ddd;">${escapeHTML(r.motif || '')}</td><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">${formatCurrency(r.amount)}</td></tr>`).join('')}
+                ${scoped.entries.map(r => `<tr><td style="padding:8px;border:1px solid #ddd;">Entrée</td><td style="padding:8px;border:1px solid #ddd;">${escapeHTML(r.date || '')}</td><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">${formatFCNumber(r.piece, 0)}</td><td style="padding:8px;border:1px solid #ddd;">${formatCurrency(r.declaration)}</td><td style="padding:8px;border:1px solid #ddd;">-</td></tr>`).join('')}
+                ${scoped.exits.map(r => `<tr><td style="padding:8px;border:1px solid #ddd;">Sorties</td><td style="padding:8px;border:1px solid #ddd;">${escapeHTML(r.date || '')}</td><td style="padding:8px;border:1px solid #ddd;">${escapeHTML(r.chauffeur || '')}</td><td style="padding:8px;border:1px solid #ddd;">${formatFCNumber(r.piece, 0)}</td><td style="padding:8px;border:1px solid #ddd;">-</td><td style="padding:8px;border:1px solid #ddd;">-</td></tr>`).join('')}
+                </tbody></table></body></html>`;
+            downloadFile(html, `rapport-declarant-${filenameDate}.html`, 'text/html');
+            showToast('Rapport déclarant généré', 'success');
+        }
 
         // =============== TRANSACTION MANAGEMENT ===============
         function loadTransactionsList() {
@@ -8880,6 +8993,14 @@
         }
 
         function updateDataStats() {
+            if (currentManagementMode === 'declarant') {
+                const t = computeDeclarantTotals();
+                document.getElementById('data-stats').textContent =
+                    `Déclaration: ${formatCurrency(t.totalDeclaration)} | Avance: ${formatCurrency(t.totalAvance)} | Reste pièces: ${formatFCNumber(t.restePiece, 0)}`;
+                updateNavCounts(clients.length, transactions.length);
+                updateNotificationCenter();
+                return;
+            }
             const clientCount = clients.length;
             const transactionCount = transactions.length;
             document.getElementById('data-stats').textContent = 
