@@ -6224,8 +6224,8 @@
         async function hydrateFromApi() {
             if (!isApiEnabled() || !apiToken) return false;
             const [clientsData, transactionsData] = await Promise.all([
-                apiRequest('/api/clients'),
-                apiRequest('/api/transactions')
+                apiRequest('/api/clients?limit=500'),
+                apiRequest('/api/transactions?limit=1000')
             ]);
             clients = Array.isArray(clientsData) ? clientsData.map(mapApiClient) : [];
             transactions = Array.isArray(transactionsData) ? transactionsData.map(mapApiTransaction) : [];
