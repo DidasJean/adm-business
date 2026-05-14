@@ -7866,6 +7866,7 @@
             const totalPieceSortie = scoped.exits.reduce((s, r) => s + (Number(r.piece) || 0), 0);
             const restePiece = totalPieceEntree - totalPieceSortie;
             const filenameDate = new Date().toISOString().slice(0, 10);
+            const reportScope = scoped.from || scoped.to ? `Période: ${scoped.from || 'début'} à ${scoped.to || 'aujourd’hui'}` : 'Période: complète';
 
             if (format === 'json') {
                 const payload = {
@@ -7901,7 +7902,6 @@
                 return;
             }
 
-            const reportScope = scoped.from || scoped.to ? `Période: ${scoped.from || 'début'} à ${scoped.to || 'aujourd’hui'}` : 'Période: complète';
             const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Rapport déclarant</title></head><body style="font-family:Arial,sans-serif;padding:18px;">
                 <h2>Rapport déclarant</h2>
                 <p><strong>Cible:</strong> ${escapeHTML(targetName)}</p>
